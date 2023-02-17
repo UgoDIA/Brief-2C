@@ -17,7 +17,7 @@ def loginq(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('accueil')
+            return redirect('historique')
         else:
             messages.success(request, ("Mauvais identifiant ou mot de passe, veuillez ressayer."))
             return redirect('login')
@@ -28,4 +28,4 @@ def loginq(request):
 def logoutq(request):
     logout(request)
     messages.success(request, ("Session deconnectée"))
-    return redirect('login')
+    return redirect('upload')

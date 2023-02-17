@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block header %}
+<link rel="stylesheet" href="{% static "CSS/stylelogin.css"  %}" />
+    {% endblock %}
+
+{% block content %}
+
+<br>
+<br>
+<h1 style = "text-align : center";>Connexion</h1>
+<br>
+
+
+
+<form action="" method=POST>
+    {% csrf_token %}
+
+<form >
+
+<div class="mb-3 w-50" style="margin:0 auto;">
+<label for="exampleInputEmail1" class="form-label">Identifiant</label>
+<input type="text" class="form-control" name="identifiant" aria-describedby="emailHelp">
+
+</div>
+<div class="mb-3 w-50" style="margin:0 auto;">
+<label for="exampleInputPassword1" class="form-label">Mot de passe</label>
+<input type="password" class="form-control" name="password">
+
+
+</div>
+
+    
+
+    <input style="margin:20px; margin-left: 575px; font-size:20px"  type="submit" value="Se connecter" class="btn btn-dark"> 
+
+</form>
+
+
+</div>
+
+
+
+</div>
+
+
+{% endblock %}
