@@ -3,6 +3,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#model
+model11.hdf5
 # C extensions
 *.so
 

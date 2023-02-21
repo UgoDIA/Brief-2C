@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container" style="padding:30px" >
+    
+<h1 style = "text-align : center";>Classification </h1>
+<h2 style = "text-align : center;color: white;margin:10px;margin-top:20px">{{result}} </h2>
+{%with path as image %}
+<img src="{% static image %}" style="max-height: 500px; max-width: 500px;display: block;margin-left: auto;margin-right: auto;" >
+{% endwith %}
+
+<div class="row m-2" >
+    <a href="{% url 'upload' %}" class="col-sm mx-5 button-l " role="button" style="margin:20px" >Faire une nouvelle classification</a>
+    <a href="#" class="col-sm mx-5 button-l " role="button" style="margin:20px" >Signaler une erreur
+      <img src="{%static 'images/flag.png'%}"style="max-height: 30px; max-width: 30px;">
+    </a>
+  </div>
+
+</div>
+
+{% endblock %}

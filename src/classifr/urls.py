@@ -32,4 +32,5 @@ urlpatterns = [
     path('classifr/', views.upload, name="upload"),
     path('classifr/',include('identification.urls')),
     path('classifr/historique',views.historique, name='historique'),
+    path('classifr/resultat', views.resultat, name='resultat')
 ]
