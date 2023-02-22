@@ -15,6 +15,8 @@ from os.path import isfile, join
 import keras.backend as K
 from keras.models import load_model
 from keras.utils import load_img, img_to_array
+from .models import Classe,Model,Historique
+from datetime import date
 
 
 # Create your views here.
@@ -27,38 +29,66 @@ def upload(request):
         uploaded_image = request.FILES['image']
         fs=FileSystemStorage()
         fs.save(uploaded_image.name, uploaded_image)
-    #return HttpResponseRedirect('/classifr/')
+        image=str(uploaded_image)
+        food_list = ['apple_pie', 'beef_carpaccio', 'bibimbap', 'cup_cakes', 'foie_gras', 'french_fries', 
+                 'garlic_bread', 'pizza', 'spring_rolls', 'spaghetti_carbonara', 'strawberry_shortcake']
+        model11 = load_model('classifr/static/model/model11.hdf5',compile = False)
+        def predict_class(model, image):
+            image = load_img(path='classifr/static/images/'+image, target_size=(299, 299))
+            image = img_to_array(image)                    
+            image = np.expand_dims(image, axis=0)         
+            image /= 255.                                      
+            pred = model.predict(image)
+            index = np.argmax(pred)
+            food_list.sort()
+            label = food_list[index]
+            perc=round(np.amax(pred)*100,2)
+            # print(label +'  '+str(perc)+' %' )
+            return label,perc
+        result=(predict_class(model11,image))
+        classe_pred=Classe.objects.get(nom_classe=result[0])
+        modelname=Model.objects.get(nom_model="model11")
+        histo=Historique(nom_image=image,precision=result[1],classe_predit=classe_pred,nom_model=modelname,date_pred=date.today())
+        histo.save()
+    
+        
+        
+        return HttpResponseRedirect('resultat')
     return render(request, 'upload.html')
 
 def resultat(request):
-    food_list = ['apple_pie', 'beef_carpaccio', 'bibimbap', 'cup_cakes', 'foie_gras', 'french_fries', 
-                 'garlic_bread', 'pizza', 'spring_rolls', 'spaghetti_carbonara', 'strawberry_shortcake']
+    clas=Classe(nom_classe='qsd')
+    clas.save()
     
-    # K.clear_session()
-    model11 = load_model('classifr/static/model/model11.hdf5',compile = False)
     
-    image='applepie.jpg'
+    # food_list = ['apple_pie', 'beef_carpaccio', 'bibimbap', 'cup_cakes', 'foie_gras', 'french_fries', 
+    #              'garlic_bread', 'pizza', 'spring_rolls', 'spaghetti_carbonara', 'strawberry_shortcake']
     
-    path="/images/"+image
-    context={}
-    def predict_class(model, image):
-        image = load_img(path='classifr/static/images/'+image, target_size=(299, 299))
-        image = img_to_array(image)                    
-        image = np.expand_dims(image, axis=0)         
-        image /= 255.                                      
-        pred = model.predict(image)
-        index = np.argmax(pred)
-        food_list.sort()
-        label = food_list[index]
-        perc=round(np.amax(pred)*100,2)
-        result=label +'  '+str(perc)+' %'
-        print(label +'  '+str(perc)+' %' )
-        return result
-        # print(np.amax(pred))
-    context={'path':path,'result':predict_class(model11, image)}    
+    # # K.clear_session()
+    # model11 = load_model('classifr/static/model/model11.hdf5',compile = False)
+    
+    # image='applepie.jpg'
+    
+    # path="/images/"+image
+    # context={}
+    # def predict_class(model, image):
+    #     image = load_img(path='classifr/static/images/'+image, target_size=(299, 299))
+    #     image = img_to_array(image)                    
+    #     image = np.expand_dims(image, axis=0)         
+    #     image /= 255.                                      
+    #     pred = model.predict(image)
+    #     index = np.argmax(pred)
+    #     food_list.sort()
+    #     label = food_list[index]
+    #     perc=round(np.amax(pred)*100,2)
+    #     result=label +'  '+str(perc)+' %'
+    #     print(label +'  '+str(perc)+' %' )
+    #     return result
+    #     # print(np.amax(pred))
+    # context={'path':path,'result':predict_class(model11, image)}    
            
              
-    return render(request,'resultat.html',context)
+    return render(request,'resultat.html')
 
 @login_required(login_url='/classifr/login')
 def historique(request):

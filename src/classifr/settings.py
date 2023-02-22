@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'classifr.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'classifr', 
+        'NAME': 'classifr3', 
         'USER': 'postgres',
         'PASSWORD': '0000',
         'HOST': '127.0.0.1', 
@@ -141,4 +141,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'  
   
 # Path where media is stored  
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'classifr/static/images')
