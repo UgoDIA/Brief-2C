@@ -11,8 +11,16 @@
 <div class="container col-1 w-50 mx-auto" style="padding:50px" >
     
      {% comment %} <a class="row-lg w-100 py-3 my-3 btn btn-secondary" style= " font-size: 20px" href="#" role="button"> Importer une image</a> {% endcomment %}
-    
+
+
     
 </div>
+
+     <h1>Upload Image</h1>
+     <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="image">
+        <button type="submit">Upload Image</button>
+    </form>
 
 {% endblock %}

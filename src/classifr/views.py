@@ -20,7 +20,12 @@ def index(request):
     return redirect('upload')
 
 def upload(request):
-    return render(request,'upload.html')
+    if request.method == 'POST':  
+        uploaded_image = request.FILES['image']
+        fs=FileSystemStorage()
+        fs.save(uploaded_image.name, uploaded_image)
+    #return HttpResponseRedirect('/classifr/')
+    return render(request, 'upload.html')
 
 @login_required(login_url='/classifr/login')
 def historique(request):
