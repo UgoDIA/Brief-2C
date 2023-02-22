@@ -332,12 +332,25 @@ h1{
   }
 }
 
-/* #txt{
-  display: block;
-  height: 50%;
-  justify-content: center;
-  align-items: center;
-  color: rgb(255, 0, 0);
+.popup{
+  width: 500px;
+  background: #ffbe3d;
+  position: absolute;
+  display: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+  padding: 0 30px 30px;
+  color: #df9a0f;
+  margin: auto;
+  visibility: hidden;
+  
 }
-  */
+
+.open-popup{
+  visibility: visible;
+}
+
+
   

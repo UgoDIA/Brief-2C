@@ -30,8 +30,8 @@ def upload(request):
         fs=FileSystemStorage()
         fs.save(uploaded_image.name, uploaded_image)
         image=str(uploaded_image)
-        food_list = ['apple_pie', 'beef_carpaccio', 'bibimbap', 'cup_cakes', 'foie_gras', 'french_fries', 
-                 'garlic_bread', 'pizza', 'spring_rolls', 'spaghetti_carbonara', 'strawberry_shortcake']
+        food_list = ['tarte_pomme', 'carpaccio_boeuf', 'bibimbap', 'cupcakes', 'foie_gras', 'frites', 
+                 'pain_a_l\'ail', 'pizza',  'spaghetti_carbonara','rouleaux_printemps', 'gateau_framboise']
         model11 = load_model('classifr/static/model/model11.hdf5',compile = False)
         def predict_class(model, image):
             image = load_img(path='classifr/static/images/'+image, target_size=(299, 299))
@@ -40,7 +40,6 @@ def upload(request):
             image /= 255.                                      
             pred = model.predict(image)
             index = np.argmax(pred)
-            food_list.sort()
             label = food_list[index]
             perc=round(np.amax(pred)*100,2)
             # print(label +'  '+str(perc)+' %' )
@@ -50,45 +49,26 @@ def upload(request):
         modelname=Model.objects.get(nom_model="model11")
         histo=Historique(nom_image=image,precision=result[1],classe_predit=classe_pred,nom_model=modelname,date_pred=date.today())
         histo.save()
+        request.session['histo']=histo.id_histo
+        request.session['food_list']=food_list
     
-        
-        
         return HttpResponseRedirect('resultat')
     return render(request, 'upload.html')
 
 def resultat(request):
-    clas=Classe(nom_classe='qsd')
-    clas.save()
     
-    
-    # food_list = ['apple_pie', 'beef_carpaccio', 'bibimbap', 'cup_cakes', 'foie_gras', 'french_fries', 
-    #              'garlic_bread', 'pizza', 'spring_rolls', 'spaghetti_carbonara', 'strawberry_shortcake']
-    
-    # # K.clear_session()
-    # model11 = load_model('classifr/static/model/model11.hdf5',compile = False)
-    
-    # image='applepie.jpg'
-    
-    # path="/images/"+image
-    # context={}
-    # def predict_class(model, image):
-    #     image = load_img(path='classifr/static/images/'+image, target_size=(299, 299))
-    #     image = img_to_array(image)                    
-    #     image = np.expand_dims(image, axis=0)         
-    #     image /= 255.                                      
-    #     pred = model.predict(image)
-    #     index = np.argmax(pred)
-    #     food_list.sort()
-    #     label = food_list[index]
-    #     perc=round(np.amax(pred)*100,2)
-    #     result=label +'  '+str(perc)+' %'
-    #     print(label +'  '+str(perc)+' %' )
-    #     return result
-    #     # print(np.amax(pred))
-    # context={'path':path,'result':predict_class(model11, image)}    
-           
-             
-    return render(request,'resultat.html')
+    histo=request.session['histo']
+    food_list=request.session['food_list']
+    histo=Historique.objects.get(id_histo=histo)
+    label=histo.classe_predit.nom_classe
+    precision=histo.precision
+    path="/images/"+histo.nom_image
+    classe=Classe.objects.values_list('nom_classe',flat=True)
+    context={'path':path,'label':label,'precision':precision,'histo':histo,'classe':classe,'food_list':food_list} 
+    if request.method =='POST':
+        x=request.POST["classec"]      
+        print(x)
+    return render(request,'resultat.html',context)
 
 @login_required(login_url='/classifr/login')
 def historique(request):
