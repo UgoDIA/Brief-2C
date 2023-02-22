@@ -34,3 +34,6 @@ urlpatterns = [
     path('classifr/historique',views.historique, name='historique'),
     path('classifr/resultat', views.resultat, name='resultat')
 ]
+
+if settings.DEBUG:  
+        urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)  

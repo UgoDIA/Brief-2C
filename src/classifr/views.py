@@ -23,7 +23,12 @@ def index(request):
     return redirect('upload')
 
 def upload(request):
-    return render(request,'upload.html')
+    if request.method == 'POST':  
+        uploaded_image = request.FILES['image']
+        fs=FileSystemStorage()
+        fs.save(uploaded_image.name, uploaded_image)
+    #return HttpResponseRedirect('/classifr/')
+    return render(request, 'upload.html')
 
 def resultat(request):
     food_list = ['apple_pie', 'beef_carpaccio', 'bibimbap', 'cup_cakes', 'foie_gras', 'french_fries', 
