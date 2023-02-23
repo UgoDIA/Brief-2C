@@ -5,6 +5,7 @@ __pycache__/
 
 #model
 model11.hdf5
+model3.hdf5
 # C extensions
 *.so
 
