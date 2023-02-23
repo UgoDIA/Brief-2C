@@ -9,7 +9,7 @@
 <h1 style = "text-align : center";>Résultat de la classification: </h1>
 <h2 style = "text-align : center;color: white;margin:10px;margin-top:20px">L'image appartient à la classe <p style="color:#ffb82b;display: inline"> {{label}}</p> à <p style="color:#ffb82b;display: inline">{{precision}}%</p></h2>
 {%with path as image %}
-<img src="{% static image %}" style="max-height: 500px; max-width: 500px;display: block;margin-left: auto;margin-right: auto;" >
+<img class="imgresult" src="{% static image %}"  >
 {% endwith %}
 
 <div class="row m-2" >
