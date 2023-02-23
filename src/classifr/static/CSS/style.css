@@ -1,5 +1,11 @@
 /* CSS */
 
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@500&display=swap');
+
+*{
+  font-family:   'Open Sans', sans-serif;
+}
+
 #title{
   text-decoration: none;
   color:inherit;
@@ -10,7 +16,8 @@
 }
 
 body{
-  background-color: #363636 !important;
+  background-color: #1e2326 !important;
+  /* background-color: rgba(1,1,1,0.7); */
   
 }
 h1{
@@ -37,7 +44,6 @@ h1{
   color: #FFFFFF !important ;
   cursor: pointer;
   flex: 0 0 auto;
-  font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
   font-size: 1.3rem;
   font-weight: 600;
   line-height: 1.5rem;
@@ -84,7 +90,6 @@ h1{
   color: #FFFFFF;
   cursor: pointer;
   flex: 0 0 auto;
-  font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
   font-size: 1.3rem;
   font-weight: 600;
   line-height: 1.5rem;
@@ -130,7 +135,6 @@ h1{
   color: #FFFFFF;
   cursor: pointer;
   flex: 0 0 auto;
-  font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
   font-size: 1.3rem;
   font-weight: 600;
   line-height: 1.5rem;
@@ -147,7 +151,7 @@ h1{
   width: auto;
   position:absolute;
   top:10px;
-  right: 350px;
+  right: 380px;
 }
 
 .button-20:hover {
@@ -176,7 +180,6 @@ h1{
   color: #FFFFFF;
   cursor: pointer;
   flex: 0 0 auto;
-  font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
   font-size: 1.3rem;
   font-weight: 600;
   line-height: 1.5rem;
@@ -222,7 +225,6 @@ h1{
   color: #FFFFFF;
   cursor: pointer;
   flex: 0 0 auto;
-  font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
   font-size: 1.3rem;
   font-weight: 600;
   line-height: 1.5rem;
@@ -268,7 +270,6 @@ h1{
   color: #FFFFFF;
   cursor: pointer;
   flex: 0 0 auto;
-  font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
   font-size: 1.125rem;
   font-weight: 600;
   line-height: 1.5rem;
@@ -333,8 +334,8 @@ h1{
 }
 
 .popup{
-  width: 500px;
-  background: #ffbe3d;
+  width: 600px;
+  background: #ffb82b;
   position: absolute;
   display: absolute;
   top: 38%;
@@ -342,9 +343,10 @@ h1{
   transform: translate(-50%,-50%);
   text-align: center;
   padding: 0 30px 30px;
-  color: #df9a0f;
+  color: #fbac0e;
   margin: auto;
-  visibility: hidden;
+  border:solid 8px #2b2b2b; 
+  border-radius: 20px;
   
 }
 
@@ -352,5 +354,14 @@ h1{
   visibility: visible;
 }
 
-
+.popupbg{
+  background-color: rgba(0,0,0,0.5);
+  top:0;
+  left:0;
+  z-index: 100;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  visibility: hidden;
+}
   

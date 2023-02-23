@@ -49,6 +49,9 @@ def upload(request):
         modelname=Model.objects.get(nom_model="model11")
         histo=Historique(nom_image=image,precision=result[1],classe_predit=classe_pred,nom_model=modelname,date_pred=date.today())
         histo.save()
+        label=result[0]
+        food_list.remove(label)
+        food_list.append("autre")
         request.session['histo']=histo.id_histo
         request.session['food_list']=food_list
     
@@ -63,11 +66,18 @@ def resultat(request):
     label=histo.classe_predit.nom_classe
     precision=histo.precision
     path="/images/"+histo.nom_image
-    classe=Classe.objects.values_list('nom_classe',flat=True)
-    context={'path':path,'label':label,'precision':precision,'histo':histo,'classe':classe,'food_list':food_list} 
+    # classe=Classe.objects.values_list('nom_classe',flat=True)
+    context={'path':path,'label':label,'precision':precision,'histo':histo,'food_list':food_list} 
     if request.method =='POST':
-        x=request.POST["classec"]      
-        print(x)
+        try:
+            x=request.POST["classec"] 
+            classe=Classe.objects.get(nom_classe=x)
+            newhisto=Historique(id_histo=histo.id_histo,classe_correcte=classe)
+            newhisto.save(update_fields=['classe_correcte'])  
+            messages.success(request, ("L'erreur à bien été enregistrée, merci."))
+            return HttpResponseRedirect(reverse('upload'))
+        except:    
+            messages.error(request, ("Une erreur est survenue lors de l'envoi du formulaire."))
     return render(request,'resultat.html',context)
 
 @login_required(login_url='/classifr/login')

@@ -19,7 +19,7 @@ def loginq(request):
             login(request, user)
             return redirect('historique')
         else:
-            messages.success(request, ("Mauvais identifiant ou mot de passe, veuillez ressayer."))
+            messages.error(request, ("Mauvais identifiant ou mot de passe, veuillez ressayer."))
             return redirect('login')
     else:
         return render(request, 'login.html')
