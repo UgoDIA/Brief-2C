@@ -16,18 +16,19 @@
     
 </div>
 
-     <h1>Upload Image</h1>
+<div class="container col-1 w-50 mx-auto" style="padding:50px" >
+     <h1>Classification d'image</h1>
      <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="file" name="image">
+        <input type="file" name="image" class="form-control form-control-lg" placeholder=".form-control-lg">
         <select class="form-select" list="datalistOptions" style='font-size: 20px;;text-align:center;border: 3px solid grey;' id="model" name="model">
           <option value="0" disabled selected>Selectionner un modèle</option>
           {% for modell in model%}
         <option>{{modell}}</option>
         {%endfor%} 
         </select>
-        <button type="submit">Upload Image</button>
-        
+        <button type="submit" class="btn btn-primary btn-lg">Upload Image</button> 
     </form>
-
+</div>
+  
 {% endblock %}
