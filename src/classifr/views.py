@@ -66,26 +66,37 @@ def upload(request):
     return render(request, 'upload.html',context)
 
 def resultat(request):
-    
-    histo=request.session['histo']
-    food_list=request.session['food_list']
-    histo=Historique.objects.get(id_histo=histo)
-    label=histo.classe_predit.nom_classe
-    precision=histo.precision
-    path="/images/"+histo.nom_image
-    # classe=Classe.objects.values_list('nom_classe',flat=True)
-    context={'path':path,'label':label,'precision':precision,'histo':histo,'food_list':food_list} 
-    if request.method =='POST':
-        try:
-            x=request.POST["classec"] 
-            classe=Classe.objects.get(nom_classe=x)
-            newhisto=Historique(id_histo=histo.id_histo,classe_correcte=classe)
-            newhisto.save(update_fields=['classe_correcte'])  
-            messages.success(request, ("L'erreur à bien été enregistrée, merci."))
-            return HttpResponseRedirect(reverse('upload'))
-        except:    
-            messages.error(request, ("Une erreur est survenue lors de l'envoi du formulaire."))
+    try:
+        histo=request.session['histo']
+        food_list=request.session['food_list']
+        histo=Historique.objects.get(id_histo=histo)
+        label=histo.classe_predit.nom_classe
+        precision=histo.precision
+        path="/images/"+histo.nom_image
+        # classe=Classe.objects.values_list('nom_classe',flat=True)
+        context={'path':path,'label':label,'precision':precision,'histo':histo,'food_list':food_list} 
+        if request.method =='POST':
+            try:
+                x=request.POST["classec"] 
+                classe=Classe.objects.get(nom_classe=x)
+                newhisto=Historique(id_histo=histo.id_histo,classe_correcte=classe)
+                newhisto.save(update_fields=['classe_correcte'])  
+                messages.success(request, ("L'erreur à bien été enregistrée, merci."))
+                del request.session['histo']
+                return HttpResponseRedirect(reverse('upload'))
+            except:    
+                messages.error(request, ("Une erreur est survenue lors de l'envoi du formulaire."))
+    except:
+           return HttpResponseRedirect(reverse('upload'))         
     return render(request,'resultat.html',context)
+
+def btreturn(request):
+    try:
+        del request.session['histo']
+    except:
+        pass
+    return HttpResponseRedirect(reverse('upload'))
+    
 
 @login_required(login_url='/classifr/login')
 def historique(request):

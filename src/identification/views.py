@@ -11,6 +11,10 @@ from django.contrib.auth.decorators import login_required
 
 
 def loginq(request):
+    try:
+        del request.session['histo']
+    except:
+        pass
     if request.method == "POST":
         username = request.POST['identifiant']
         password = request.POST['password']

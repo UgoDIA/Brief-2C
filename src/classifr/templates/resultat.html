@@ -13,7 +13,7 @@
 {% endwith %}
 
 <div class="row m-2" >
-    <a href="{% url 'upload' %}" class="col-sm mx-5 button-l " role="button" style="margin:20px;font-size:25px"  >Faire une nouvelle classification</a>
+    <a href="{% url 'btreturn' %}" class="col-sm mx-5 button-l " role="button" style="margin:20px;font-size:25px"  >Faire une nouvelle classification</a>
     <button class="col-sm mx-5 button-l " type="button" role="button" onclick="openPopup()" style="margin:20px;font-size:25px" >Signaler une erreur
       <img src="{%static 'images/flag.png'%}"style="max-height: 30px; max-width: 30px;">
     </button>
@@ -42,16 +42,16 @@
 </div>
 
 <script>
-  let popup = document.getElementById("popup");
-  let popupbg = document.getElementById("popupbg");
-  function openPopup(){
-    //popupbg.classList.add("open-popup");
-    document.getElementById("popupbg").style.visibility="visible"
-  }
-  function closePopup(){
-    //popupbg.classList.remove("open-popup");
-    document.getElementById("popupbg").style.visibility="hidden"
-  }
+let popup = document.getElementById("popup");
+let popupbg = document.getElementById("popupbg");
+function openPopup(){
+  //popupbg.classList.add("open-popup");
+  document.getElementById("popupbg").style.visibility="visible"
+}
+function closePopup(){
+  //popupbg.classList.remove("open-popup");
+  document.getElementById("popupbg").style.visibility="hidden"
+}
 
 
 
