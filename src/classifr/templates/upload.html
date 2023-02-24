@@ -8,27 +8,73 @@
 <a class="button-20" role="button" href="{% url 'historique' %}" role="button"> Historique </a>
 {% endif %} 
 
+
+<h1 style="text-align:center;margin-top:50px">Classification d'image</h1>
 <div class="container col-1 w-50 mx-auto" style="padding:50px" >
-    
-     {% comment %} <a class="row-lg w-100 py-3 my-3 btn btn-secondary" style= " font-size: 20px" href="#" role="button"> Importer une image</a> {% endcomment %}
-
-
-    
-</div>
-
-<div class="container col-1 w-50 mx-auto" style="padding:50px" >
-     <h1>Classification d'image</h1>
+     
      <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="file" name="image" class="form-control form-control-lg" placeholder=".form-control-lg">
+        <input type="file" id="upload" name="image" class="form-control form-control-lg" placeholder=".form-control-lg"style="margin-bottom:3%">
         <select class="form-select" list="datalistOptions" style='font-size: 20px;;text-align:center;border: 3px solid grey;' id="model" name="model">
-          <option value="0" disabled selected>Selectionner un modèle</option>
+          <option value='0' disabled selected>Selectionner un modèle</option>
           {% for modell in model%}
         <option>{{modell}}</option>
         {%endfor%} 
         </select>
-        <button type="submit" class="btn btn-primary btn-lg">Upload Image</button> 
+       <div style="text-align:center; margin-top:3%"> <button disabled type="submit" id="submit" class="btn btn-warning btn-lg" style="" >Classifier</button> </div>
     </form>
 </div>
   
+<script>
+const model = document.getElementById('model');
+const submitButton = document.getElementById('submit');
+const upload =document.getElementById("upload");
+
+model.addEventListener("change", updatesubmitButton);
+ upload.addEventListener("input", updatesubmitButton);
+
+ function updatesubmitButton() {
+     if ( model.value === '0'|| upload.files.length == 0) {
+       submitButton.disabled = true;
+       console.log('vide')
+     } else {
+       submitButton.disabled = false;
+       console.log('selec')
+     }
+   } 
+
+</script>
+
+
+<div id="bg-spinner">  
+     <h3>Classification de l'image en cours, veuillez patienter...</h3>
+     <div id="position-spinner"> 
+       <span id="spinner">
+       </span>
+     </div>
+   </div>
+   
+   
+      <script>
+       jQuery(function($){
+         $(document).ajaxSend(function(){
+           $("#bg-spinner").fadeIn(500);
+         });
+   
+         $("#submit").click(function(){
+           $.ajax({
+             type:'GET',
+             success:function(data){
+               var d = $.parseJSON(data);
+               alert(d.Test);
+             }
+           }).done(function(){
+             setTimeout(function(){
+               $("#bg-spinner").fadeOut(500);
+             },700);
+           });
+         });
+       });
+      </script>
+
 {% endblock %}
