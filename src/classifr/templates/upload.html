@@ -31,7 +31,11 @@ const model = document.getElementById('model');
 const submitButton = document.getElementById('submit');
 const upload =document.getElementById("upload");
 
-model.addEventListener("change", classedesc);
+model.addEventListener('change',() => {    
+     updatesubmitButton();
+     classedesc();    
+});
+{% comment %} model.addEventListener("change", classedesc); {% endcomment %}
 upload.addEventListener("input", updatesubmitButton);
 
 function updatesubmitButton() {
@@ -46,10 +50,10 @@ if ( model.value === '0'|| upload.files.length == 0) {
 
  function classedesc(){
      if (model.value==="model3"){
-          document.getElementById("description").innerHTML ="Le model3 contient 3 classes: Tarte au pomme, omelette et pizza"
+          document.getElementById("description").innerHTML ="Le model3 contient les classes Tarte au pomme, omelette et pizza"
      }
      else{
-          document.getElementById("description").innerHTML ="Le model11 contient 11 classes: Tarte au pomme, carpaccio de boeuf, bibimbap, cupcakes, foie gras, frites, pain à l'ail, pizza, spaghetti carbonara, rouleaux de printemps et gateau à la framboise"
+          document.getElementById("description").innerHTML ="Le model11 contient les classes Tarte au pomme, carpaccio de boeuf, bibimbap, cupcakes, foie gras, frites, pain à l'ail, pizza, spaghetti carbonara, rouleaux de printemps et gateau à la framboise"
      }
      
  }  
