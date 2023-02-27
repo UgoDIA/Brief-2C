@@ -23,7 +23,7 @@
         .then((resp)=>resp.json())
         .then(function(data){
             //console.log(data)
-            let tableHtml = '<table><thead><tr><th>ID</th><th>Date</th><th>Image</th><th>Classe prédite</th><th>Precision</th><th>Correct Class</th><th>Model Name</th></tr></thead><tbody>';
+            let tableHtml = '<table><thead><tr><th>ID</th><th>Date</th><th>Image</th><th>Classe prédite</th><th>Précision</th><th>Classe correcte</th><th>Modèle utilisé</th></tr></thead><tbody>';
                 data.forEach(item => {
                     tableHtml += `<tr><td>${item.id_histo}</td><td>${item.date_pred}</td><td><img src=${staticurl}${item.nom_image} height="80" width="80"></td><td>${item.classe_predit} </td><td>${item.precision}%</td><td>${item.classe_correcte || '-'}</td><td>${item.nom_model}</td></tr>`;
                   });
