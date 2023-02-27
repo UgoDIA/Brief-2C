@@ -34,6 +34,7 @@ urlpatterns = [
     path('classifr/historique/',views.historique, name='historique'),
     path('classifr/resultat/', views.resultat, name='resultat'),
     path('classifr/retour/', views.btreturn, name='btreturn'),
+    path('classifr/',include('api.urls')),
 ]
 
 if settings.DEBUG:  
