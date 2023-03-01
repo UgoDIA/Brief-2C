@@ -3,6 +3,9 @@
 {% load static %}
 
 {% block content %}
+{% if user.is_authenticated %}
+<a class="button-20" role="button" href="{% url 'historique' %}" role="button"> Historique </a>
+{% endif %} 
 
 <div class="container" style="padding:30px" >
     

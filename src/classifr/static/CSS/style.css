@@ -222,7 +222,7 @@ h1{
 
 
 .button-sig {
-  background-color: #ae0a0a;
+  background-color: transparent;
   border: 1px solid transparent;
   border-radius: .75rem;
   box-sizing: border-box;
@@ -242,14 +242,14 @@ h1{
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-
+  margin-top: 5px;
  
  
 }
 
 .button-sig:hover {
-  background-color: #941313;
-  color: #000000;
+
+  color: #f4aa16;
   transition: 0.5s;
 }
 
@@ -266,15 +266,15 @@ h1{
 }
 
 
-.button-4 {
-  background-color: #133e99;
+.button-histo {
+  background-color: transparent;
   border: 1px solid transparent;
   border-radius: .75rem;
   box-sizing: border-box;
-  color: #FFFFFF;
+  color: #ffb82b;
   cursor: pointer;
   flex: 0 0 auto;
-  font-size: 1.125rem;
+  font-size: 1.3rem;
   font-weight: 600;
   line-height: 1.5rem;
   padding: .75rem 1.2rem;
@@ -287,25 +287,36 @@ h1{
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  width: auto;
+  margin-top: 5px;
+ 
+ 
 }
 
-.button-4:hover {
-  background-color: #940920;
+.button-histo:hover {
+
+  color: #f4aa16;
+  transition: 0.5s;
 }
 
-.button-4:focus {
+.button-histo:focus {
   box-shadow: none;
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
+
+@media (min-width: 768px) {
+  .button-histo {
+    padding: .75rem 1.5rem;
+  }
+}
+
 
 /* SPINNER */
 
 #bg-spinner{
   text-align: center;
   color: #FFFFFF;
-  padding: 380px 0;
+  padding: 300px;
   top:0;
   left:0;
   z-index: 100;
@@ -371,7 +382,7 @@ h1{
 }
 
 .imgresult{
-max-height: 500px; 
+max-height: 400px; 
 max-width: 500px;
 display: block;
 margin-left: auto;
@@ -413,4 +424,18 @@ table.dataTable thead > tr > th.sorting:before, table.dataTable thead > tr > th.
 .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > thead > tr > th, .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > thead > tr > td, .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > th, .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > td {
   vertical-align: middle;
   text-align: center;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+  border: 2px solid #000000b1 !important;
+  border-radius: 10px !important;
+  background-color: #ffffff3f !important;
+  margin-left: 3px;
+}
+
+table.dataTable thead > tr > th.sorting, table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sorting_desc, table.dataTable thead > tr > th.sorting_asc_disabled, table.dataTable thead > tr > th.sorting_desc_disabled, table.dataTable thead > tr > td.sorting, table.dataTable thead > tr > td.sorting_asc, table.dataTable thead > tr > td.sorting_desc, table.dataTable thead > tr > td.sorting_asc_disabled, table.dataTable thead > tr > td.sorting_desc_disabled {
+  cursor: pointer;
+  position: relative;
+  text-align: center;
+  padding-right: 26px;
 }
