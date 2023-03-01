@@ -4,7 +4,7 @@
 
 
 {% block content %}
-<h1 style="margin-top:5px">Historique</h1>
+<h1 style="margin-top:5px">Historique </h1> 
 
 <div id="cont" style="margin-top:5px;padding-left: 20px;padding-right: 20px;background-color:#ffb82b;border:solid 5px #ffb82b;border-radius: 10px;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
     
@@ -66,7 +66,7 @@ function closePopup(){
                 data.forEach(item => {
                     const editBtnId = `edit-${item.id_histo}`;
                     const delBtnId = `del-${item.id_histo}`;
-                    tableHtml += `<tr><td>${item.id_histo}</td><td>${item.date_pred}</td><td><img src=${staticurl}${item.nom_image} height="80" width="80"></td><td>${item.classe_predit} </td><td>${item.precision}%</td><td>${item.classe_correcte || '-'}</td><td>${item.nom_model}</td><td><button id="${editBtnId}">Editer<button id="${delBtnId}">Supp</td></tr>`;
+                    tableHtml += `<tr><td>${item.id_histo}</td><td>${item.date_pred}</td><td><img src=${staticurl}${item.nom_image} height="80" width="80"></td><td>${item.classe_predit} </td><td>${item.precision}%</td><td>${item.classe_correcte || '<i class="bi bi-check-lg text-success" style="font-size: 40px; font-weight: bold;"></i>'}</td><td>${item.nom_model}</td><td><button class="btn btn-warning " style="margin-right:5px" id="${editBtnId}">Editer <i class="bi bi-pencil-square"style="font-size: 20px; font-weight: bold;"></i><button class="btn btn-danger" style="font-size:20px;margin-left: 5px" id="${delBtnId}">X</td></tr>`;
                     
                   });
                 tableHtml += '</tbody></table>';

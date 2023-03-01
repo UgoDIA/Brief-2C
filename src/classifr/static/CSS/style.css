@@ -409,3 +409,8 @@ table.dataTable thead > tr > th.sorting:before, table.dataTable thead > tr > th.
   font-size: 0.8em;
   color: #ffc107;
 }
+
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > thead > tr > th, .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > thead > tr > td, .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > th, .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody > table > tbody > tr > td {
+  vertical-align: middle;
+  text-align: center;
+}
