@@ -14,15 +14,12 @@ def getHisto(request):
     serializer=HistoSerializer(histo, many=True)
     return Response(serializer.data)
     
-    
-
 @api_view(['GET'])
 def getHistoDet(request,pk):
     histo=Historique.objects.get(id_histo=pk)
     serializer=HistoSerializer(histo, many=False)
     return Response(serializer.data)
     
-
 @api_view(['POST'])
 def createHisto(request):
     serializer=HistoSerializer(data=request.data)
