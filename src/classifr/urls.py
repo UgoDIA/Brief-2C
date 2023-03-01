@@ -35,6 +35,8 @@ urlpatterns = [
     path('classifr/resultat/', views.resultat, name='resultat'),
     path('classifr/retour/', views.btreturn, name='btreturn'),
     path('classifr/',include('api.urls')),
+    path('classifr/multiple/', views.uploadmultiple, name="uploadmultiple"),
+    path('classifr/resultatmultiple/', views.resultatmultiple, name="resultatmultiple"),
 ]
 
 if settings.DEBUG:  
