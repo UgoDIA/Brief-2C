@@ -9,19 +9,22 @@
 <button id='btnerreurs' class='button-sig' style=""onclick="erreursclick()">Erreurs <i class="bi bi-bug-fill"></i> </button>
 <button id='btnstats' class='button-sig' style=""onclick="statsclick()">Stats <i class="bi bi-bar-chart-line-fill"></i></button>
 </div>
-<div class="container">
+
 <div id="cont" style="margin-top:5px;padding-left: 20px;padding-right: 20px;background-color:#ffb82b;border:solid 5px #ffb82b;border-radius: 10px;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
     
-<table class="table table-dark table-striped table-hover" style="color:white" id="table-container" ></table>
+<table class="table table-dark table-striped " style="color:white" id="table-container" ></table>
     
 </div>
-</div>
+
 <div class="popupbg" id='popupbg'>
   
     <div class="popup" id='popup' >
       
       
     </div>
+    </div>
+    <div id="statscontainer" class="container" hidden>
+        <h1>test</h1>
     </div>
 
 <script type="text/javascript">
@@ -55,11 +58,17 @@ function closePopup(){
     const csrftoken = getCookie('csrftoken');
 
 
-    buildTable()
+    buildTable(filtre=0)
 
-    function buildTable(){
+    function buildTable(filtre){
         var cont = document.getElementById(cont)
-        var url='http://127.0.0.1:8000/classifr/api/histo/'
+        if (filtre==0){
+            var url='http://127.0.0.1:8000/classifr/api/histo/'
+        }
+        else{
+            var url='http://127.0.0.1:8000/classifr/api/histo/?null=false'
+        }
+        
         var staticurl="{%static 'images/'%}"
         var activeItem=null
         fetch(url)
@@ -179,7 +188,7 @@ function closePopup(){
                 })
             }).then(function(Response){
                 
-                buildTable();
+                buildTable(filtre);
                 
             })
             closePopup();
@@ -203,7 +212,7 @@ function closePopup(){
                     'X-CSRFToken':csrftoken,
                 }
             }).then((response) => {
-                buildTable()
+                buildTable(filtre)
             })
             closePopup();
         });
@@ -224,10 +233,12 @@ btnstats=document.getElementById("btnstats")
         btnstats.disabled=false;
         btnstats.className="button-sig";
         document.getElementById('cont').hidden = false;
-        buildTable();
+        document.getElementById('statscontainer').hidden = true;
+        buildTable(filtre=0);
     }
 
     function erreursclick(){
+        filtre=1
         console.log("erreurs")
         btnerreurs.disabled=true
         btnerreurs.className="button-histo"
@@ -236,7 +247,8 @@ btnstats=document.getElementById("btnstats")
         btnstats.disabled=false
         btnstats.className="button-sig"
         document.getElementById('cont').hidden = false;
-        buildTable2();
+        document.getElementById('statscontainer').hidden = true;
+        buildTable(filtre);
     }
 
     function statsclick(){
@@ -248,98 +260,8 @@ btnstats=document.getElementById("btnstats")
         btnhisto.disabled=false
         btnhisto.className="button-sig"
         document.getElementById('cont').hidden = true;
-        
-    }
-    
-    function buildTable2(){
-        var cont = document.getElementById(cont)
-        var url='http://127.0.0.1:8000/classifr/api/histo/?null=false'
-        var staticurl="{%static 'images/'%}"
-        var activeItem=null
-        fetch(url)
-        .then((resp)=>resp.json())
-        .then(function(data){
-            //console.log(data)
-            
-            let tableHtml = '<table><thead><tr><th>ID</th><th>Date</th><th>Image</th><th>Résultat</th><th>Précision</th><th>Classe correcte</th><th>Modèle utilisé</th><th>Actions</th></tr></thead><tbody>';
-                data.forEach(item => {
-                    const editBtnId = `edit-${item.id_histo}`;
-                    const delBtnId = `del-${item.id_histo}`;
-                    tableHtml += `<tr><td>${item.id_histo}</td><td>${item.date_pred}</td><td><img src=${staticurl}${item.nom_image} height="80" width="80"></td><td>${item.classe_predit} </td><td>${item.precision}%</td><td>${item.classe_correcte || '<i class="bi bi-check-lg text-success" style="font-size: 40px; font-weight: bold;"></i>'}</td><td>${item.nom_model}</td><td><button class="btn btn-warning " style="margin-right:5px" id="${editBtnId}">Editer <i class="bi bi-pencil-square"style="font-size: 20px; font-weight: bold;"></i><button class="btn btn-danger" style="font-size:20px;margin-left: 5px;color:black;font-weight:bold" id="${delBtnId}">X</td></tr>`;
-                    
-                  });
-                tableHtml += '</tbody></table>';
-                
-                document.getElementById('table-container').innerHTML = tableHtml; 
+        document.getElementById('statscontainer').hidden = false;
 
-                data.forEach(item => {
-                    const editBtnId = `edit-${item.id_histo}`;
-                    const delBtnId = `del-${item.id_histo}`;
-
-                    document.getElementById(editBtnId).addEventListener('click', () => {
-                        openPopup();
-                        
-                      //console.log(item);
-                      if (item.nom_model=="model3"){
-                        foodList=['tarte_pomme', 'omelette', 'pizza',"autre",null]
-                        
-                    } else{
-                        foodList=['tarte_pomme', 'carpaccio_boeuf', 'bibimbap', 'cupcakes', 'foie_gras', 'frites', 
-                        'pain_a_l\'ail', 'pizza',  'spaghetti_carbonara','rouleaux_printemps', 'gateau_framboise',"autre",null]
-                    }
-                    foodList = foodList.filter(e => e !== item.classe_correcte)
-                    
-                      const formhtml=`<button type="button" style="position:absolute;top:5px;right:5px; font-size:25px" class="btn-close" onclick="closePopup()" aria-label="Close"></button>
-                      <h1 style='color:black;'>Modification</h1>
-                    <form  method="post" id=formclass>
-                        
-                        <label for="classec" style="color:black;">Changer la classe correcte</label>
-                        <select class="form-select" list="datalistOptions" style='font-size: 20px;;text-align:center;border: 3px solid grey;' id="classec" name="classec">
-                        <option value="${item.classe_correcte}" selected>${item.classe_correcte}</option>
-                        
-                        </select>
-                        <input class="btn btn-dark" style="font-size:24px;margin-top: 4%" type="submit" value="Valider" id='submit' >
-                    </form>`
-                    document.getElementById('popup').innerHTML=formhtml
-
-                    const select = document.getElementById('classec')
-                    foodList.forEach(option => {
-                        const optionElement = document.createElement('option');
-                        optionElement.text = option;
-                        optionElement.value = option;
-                        select.add(optionElement);
-                      });
-
-                    
-                    console.log(foodList)
-                    editItem(item);
-                      // Replace the console.log statement with your desired edit functionality
-                    });
-                    document.getElementById(delBtnId).addEventListener('click', () => {
-                        deleteItem(item);
-                    });
-                  });
-
-                $(document).ready( function () {
-                    $('#table-container').DataTable({
-                        order: [0,"desc"],
-                        scrollY: "400px",
-                        scrollCollapse: true,  
-                        "bDestroy": true,       
-                        "language": {
-                            "lengthMenu": "Afficher _MENU_ lignes",
-                            "info": "Affichage de _END_ lignes sur _TOTAL_ lignes",
-                            "search": "Filtrer: ",
-                            "paginate": {
-                                "next":       "Suivant",
-                                "previous":   "Précédent"
-                            },
-                        }
-                        
-                    });
-                } );
-        })
-           
     }
 
 </script>
