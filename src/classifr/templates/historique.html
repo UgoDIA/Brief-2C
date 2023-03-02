@@ -102,7 +102,8 @@ function closePopup(){
                         foodList=['tarte_pomme', 'carpaccio_boeuf', 'bibimbap', 'cupcakes', 'foie_gras', 'frites', 
                         'pain_a_l\'ail', 'pizza',  'spaghetti_carbonara','rouleaux_printemps', 'gateau_framboise',"autre",null]
                     }
-                    foodList = foodList.filter(e => e !== item.classe_correcte)
+                    foodList = foodList.filter(e => e !== item.classe_correcte && e !== item.classe_predit)
+                    
                     
                       const formhtml=`<button type="button" style="position:absolute;top:5px;right:5px; font-size:25px" class="btn-close" onclick="closePopup()" aria-label="Close"></button>
                       <h1 style='color:black;'>Modification</h1>
