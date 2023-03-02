@@ -23,8 +23,12 @@
         </select>
        <div style="text-align:center; margin-top:3%"> <button disabled type="submit" id="submit" class="btn btn-warning btn-lg" style="" >Classifier</button> </div>
     </form>
-    <div id='description' style="font-size:20px;text-align:center;color:white"></div>
-</div>
+    <div id='description' style="font-size:20px;color:white;width:fit-content;text-align:center;margin:0 auto"></div>
+
+  </div>
+
+   
+
   
 <script>
 const model = document.getElementById('model');
@@ -50,10 +54,60 @@ if ( model.value === '0'|| upload.files.length == 0) {
 
  function classedesc(){
      if (model.value==="model3"){
-          document.getElementById("description").innerHTML ="Le model3 contient les classes Tarte au pomme, omelette et pizza"
+          document.getElementById("description").innerHTML =`
+          <h2>Classes du modèle</h2>
+          <table class="table table-dark table-striped "style="margin-top:5px ;border-radius: 8px;overflow: hidden;">
+          <tr>
+            
+            <td style="border: 3px solid #e39b0b">Tarte au pomme</td>
+          </tr>
+          <tr>
+        
+            <td style="border: 3px solid #e39b0b">Omelette</td>
+           
+          </tr>
+          <tr>
+            
+            <td style="border: 3px solid #e39b0b">Pizza</td>
+           
+          </tr>
+        </table>`
      }
      else{
-          document.getElementById("description").innerHTML ="Le model11 contient les classes Tarte au pomme, carpaccio de boeuf, bibimbap, cupcakes, foie gras, frites, pain à l'ail, pizza, spaghetti carbonara, rouleaux de printemps et gateau à la framboise"
+          document.getElementById("description").innerHTML =`
+          <h2 style="margin-top:5px">Classes du modèle</h2>
+          <table class="table table-dark table-striped "style="margin-top:5px ;border-radius: 8px;overflow: hidden;">
+            <tr>
+            
+            <td style="border: 3px solid #e39b0b">Tarte au pomme</td>
+            <td style="border: 3px solid #e39b0b">Carpaccio de boeuf</td>
+          </tr>
+          <tr>
+       
+            <td style="border: 3px solid #e39b0b">Bibimbap</td>
+            <td style="border: 3px solid #e39b0b">Cupcakes</td>
+          </tr>
+          <tr>
+          
+            <td style="border: 3px solid #e39b0b">Foie gras</td>
+            <td style="border: 3px solid #e39b0b">Frites</td>
+          </tr>
+          <tr>
+          
+            <td style="border: 3px solid #e39b0b">Pain à l'ail</td>
+            <td style="border: 3px solid #e39b0b">Pizza</td>
+          </tr>
+          <tr>
+          
+            <td style="border: 3px solid #e39b0b">Spaghetti carbonara</td>
+            <td style="border: 3px solid #e39b0b">Rouleaux de printemps</td>
+          </tr>
+          <tr>
+          
+            <td style="border: 3px solid #e39b0b">Gâteau à la framboise</td>
+          
+          </tr>
+        </table>`
      }
      
  }  

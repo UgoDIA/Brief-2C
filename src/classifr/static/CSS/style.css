@@ -39,14 +39,14 @@ h1{
 
   
 .button-40 {
-  background-color: #133e99;
+  background-color: #000000;
   border: 1px solid transparent;
   border-radius: .75rem;
   box-sizing: border-box;
   color: #FFFFFF !important ;
   cursor: pointer;
   flex: 0 0 auto;
-  font-size: 1.3rem;
+  font-size: 16px;
   font-weight: 600;
   line-height: 1.5rem;
   padding: .75rem 1.2rem;
@@ -62,7 +62,7 @@ h1{
   width: auto;
   position:absolute;
   top:10px;
-  right: 170px;
+  right: 120px;
 }
 
 .button-40:hover {
@@ -92,7 +92,7 @@ h1{
   color: #FFFFFF;
   cursor: pointer;
   flex: 0 0 auto;
-  font-size: 1.3rem;
+  font-size: 16px;
   font-weight: 600;
   line-height: 1.5rem;
   padding: .75rem 1.2rem;
@@ -139,7 +139,7 @@ h1{
   color: #FFFFFF;
   cursor: pointer;
   flex: 0 0 auto;
-  font-size: 1.3rem;
+  font-size: 16px;
   font-weight: 600;
   line-height: 1.5rem;
   padding: .75rem 1.2rem;
@@ -155,7 +155,7 @@ h1{
   width: auto;
   position:absolute;
   top:10px;
-  right: 380px;
+  right: 300px;
 }
 
 .button-20:hover {
@@ -439,3 +439,5 @@ table.dataTable thead > tr > th.sorting, table.dataTable thead > tr > th.sorting
   text-align: center;
   padding-right: 26px;
 }
+
+

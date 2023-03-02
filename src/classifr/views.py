@@ -17,6 +17,8 @@ from keras.models import load_model
 from keras.utils import load_img, img_to_array
 from .models import Classe,Model,Historique
 from datetime import date
+from django.db.models import Count
+from django.db import connection
 
 
 # Create your views here.

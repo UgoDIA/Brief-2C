@@ -12,7 +12,7 @@
 
 <div id="cont" style="margin-top:5px;padding-left: 20px;padding-right: 20px;background-color:#ffb82b;border:solid 5px #ffb82b;border-radius: 10px;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
     
-<table class="table table-dark table-striped " style="color:white" id="table-container" ></table>
+<table class="table table-dark table-striped " style="color:white;border-radius: 5px;overflow: hidden;" id="table-container" ></table>
     
 </div>
 
@@ -23,8 +23,8 @@
       
     </div>
     </div>
-    <div id="statscontainer" class="container" hidden>
-        <h1>test</h1>
+    <div id="statscontainer" class="statscontainer" hidden style="text-align:center;margin: 0 auto;width:500px;margin-top:5px;padding-left: 20px;padding-right: 20px;padding-top:20px;background-color:#ffb82b;border:solid 5px #ffb82b;border-radius: 10px;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+        <table class="table table-dark table-striped " style="color:white;border-radius: 10px;overflow: hidden;" id="stats-table-container" ></table>
     </div>
 
 <script type="text/javascript">
@@ -260,7 +260,52 @@ btnstats=document.getElementById("btnstats")
         btnhisto.className="button-sig"
         document.getElementById('cont').hidden = true;
         document.getElementById('statscontainer').hidden = false;
-
+        url="http://127.0.0.1:8000/classifr/api/stats/"
+        fetch(url)
+        .then((resp)=>resp.json())
+        .then(function(data){
+            createTable=`
+            <table>
+            <tr style="font-size:18px">
+                <th style="color:#ffb82b; font-size:18px">Nom du Model</th>
+                <th  scope="col">${data[0].nomModel}</th>
+                <th scope="col">${data[1].nomModel}</th>
+            
+            </tr>
+            <tr style="font-size:18px">
+                <th style="color:#ffb82b" scope="row">Total</th>
+                <td>${data[0].total}</td>
+                <td>${data[1].total}</td>
+            </tr>
+            <tr style="font-size:18px">
+                <th style="color:#ffb82b" scope="row">Bonne classification</th>
+                <td>${data[0].success}</td>
+                <td>${data[1].success}</td>
+            </tr>
+            <tr style="font-size:18px">
+                <th style="color:#ffb82b" scope="row">Erreurs</th>
+                <td>${data[0].errors}</td>
+                <td>${data[1].errors}</td>
+            </tr>
+            <tr style="font-size:18px">
+                <th style="color:#ffb82b" scope="row">Précision</th>
+                <td>${data[0].pourcentage} %</td>
+                <td>${data[1].pourcentage} %</td>
+            </tr>
+            <tr style="font-size:18px">
+                <th style="color:#ffb82b" scope="row">Top</th>
+                <td>${data[0].top}</td>
+                <td>${data[1].top}</td>
+            </tr>
+            <tr style="font-size:18px">
+                <th style="color:#ffb82b" scope="row">Faiblesse</th>
+                <td>${data[0].flop}</td>
+                <td>${data[1].flop}</td>
+            </tr>
+            </table>
+            `
+            document.getElementById('stats-table-container').innerHTML=createTable  
+        })
     }
 
 </script>
