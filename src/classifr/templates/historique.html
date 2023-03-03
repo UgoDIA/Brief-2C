@@ -2,6 +2,11 @@
 
 {% load static %}
 
+{% block header %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2 "></script>
+
+{% endblock %}
 
 {% block content %}
 <div class='container' style="text-align:center">
@@ -20,11 +25,19 @@
   
     <div class="popup" id='popup' >
       
-      
     </div>
     </div>
-    <div id="statscontainer" class="statscontainer" hidden style="text-align:center;margin: 0 auto;width:500px;margin-top:5px;padding-left: 20px;padding-right: 20px;padding-top:20px;background-color:#ffb82b;border:solid 5px #ffb82b;border-radius: 10px;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
-        <table class="table table-dark table-striped " style="color:white;border-radius: 10px;overflow: hidden;" id="stats-table-container" ></table>
+    <div id="statschartcontainer" class="flex-container" hidden >
+        <div id="statscontainer" class="flex-child g1">
+             <table class="table table-dark table-striped" style="color:white;" id="stats-table-container" ></table>
+         </div>
+        <div class="flex-child g2">
+            <button>test</button>
+            <button>test</button>
+            <button>test</button>
+          
+            <canvas style="height: 280px;" id="myChart"></canvas>
+          </div>
     </div>
 
 <script type="text/javascript">
@@ -233,7 +246,7 @@ btnstats=document.getElementById("btnstats")
         btnstats.disabled=false;
         btnstats.className="button-sig";
         document.getElementById('cont').hidden = false;
-        document.getElementById('statscontainer').hidden = true;
+        document.getElementById('statschartcontainer').hidden = true;
         buildTable(filtre=0);
     }
 
@@ -247,7 +260,7 @@ btnstats=document.getElementById("btnstats")
         btnstats.disabled=false
         btnstats.className="button-sig"
         document.getElementById('cont').hidden = false;
-        document.getElementById('statscontainer').hidden = true;
+        document.getElementById('statschartcontainer').hidden = true;
         buildTable(filtre);
     }
 
@@ -260,7 +273,7 @@ btnstats=document.getElementById("btnstats")
         btnhisto.disabled=false
         btnhisto.className="button-sig"
         document.getElementById('cont').hidden = true;
-        document.getElementById('statscontainer').hidden = false;
+        document.getElementById('statschartcontainer').hidden = false;
         url="http://127.0.0.1:8000/classifr/api/stats/"
         fetch(url)
         .then((resp)=>resp.json())
@@ -307,6 +320,136 @@ btnstats=document.getElementById("btnstats")
             `
             document.getElementById('stats-table-container').innerHTML=createTable  
         })
+
+        Chart.register(ChartDataLabels);
+
+        const data = {
+            labels: [''],
+            datasets: [ {
+              label: ['test1'],
+              data: [2],
+              borderWidth: 1,
+              barPercentage:0.90,
+              categoryPercentage:0.95,
+            },
+            {
+                label: ['test2'],
+                data: [3],
+                borderWidth: 1,
+                barPercentage:0.90,
+                categoryPercentage:0.95,
+              },
+             ]
+          };
+          // config 
+    const config = {
+        type: 'bar',
+        data,
+        options: {
+          
+          plugins:{
+            tooltip:{
+              bodyFont:{
+                size:19,
+                weight:'bold',
+              }
+            },
+            datalabels: {
+              labels: {
+                name: {
+                  clamp:true,
+                  display:'auto',
+                  anchor:'start',
+                  color:'black',
+                  align: 'bottom',
+                  font: {size: 15, weight:'bold'},
+                  formatter: function(value, ctx) {
+                    return ctx.active
+                      ? ctx.dataset.label
+                      : ctx.dataset.label;
+                     
+                  }
+                },
+                value: {
+                  clamp:true,
+                  display:'auto',
+                  anchor:'end',
+                  color:'black',
+                  align: 'top',
+                  font: {size: 16, weight:'bold'},
+                  borderWidth: 2,
+                  borderRadius: 4,
+                  formatter: function(value, ctx) {
+                    return ctx.active
+                      ? value
+                      : Math.round(value * 1000) / 1000;
+                  },
+                  padding: 0
+                }
+              }
+            },
+            legend:{
+              display:true,
+              position:'top',
+              labels:{
+                padding:2,
+                font: {
+                  size: 17 },
+                  boxWidth: 15,
+                  color:'black',
+                  weight:'bold',  
+                }
+              },
+            },
+            scales: {
+              x:{
+                ticks:{
+                  display:true,
+                }
+              },
+              y: {
+                ticks: {
+                  color:'black',
+                  font: {
+                    size:15,
+                    weight:'bold',
+                  },
+                },
+                beginAtZero: true,
+                title:{
+                  display:true,
+                  text:'Classification',
+                  color:"black",
+                  font: {
+                    
+                    size: 20,
+                    weight: 'bold',
+                  },
+                },
+              },
+            },
+          }
+        };
+
+  
+      // render init block
+      const ctx=document.getElementById('myChart');
+      const myChart = new Chart(
+        ctx,
+        config
+      );
+      function clickHandler(click){
+        const points = myChart.getElementsAtEventForMode(click, 'nearest' , {intersect:true}, true);
+        if (points.length) {
+          const firstPoint = points[0];
+          value= myChart.data.datasets[firstPoint.datasetIndex].label[0]
+          console.log(value)
+          
+        }
+      }
+      ctx.onclick = clickHandler;
+      console.log(myChart)
+  
     }
 
 </script>
