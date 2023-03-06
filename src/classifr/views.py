@@ -103,13 +103,14 @@ def historique(request):
     return render(request,'historique.html')
 
 def uploadmultiple(request):
-    model=Model.objects.values_list('nom_model',flat=True)
-    context={"model":model}
-    if request.method == 'POST':  
-        uploaded_image = request.FILES['image']
-        fs=FileSystemStorage()
-        fs.save(uploaded_image.name, uploaded_image)
-        image=str(uploaded_image)
+   model=Model.objects.values_list('nom_model',flat=True)
+   context={"model":model}
+   if request.method == 'POST':
+        for f in request.FILES.getlist('image'):
+            uploaded_image = f
+            fs=FileSystemStorage()
+            fs.save(uploaded_image.name, uploaded_image)
+            image=str(uploaded_image)
         modelx=request.POST['model']
         if modelx == "model11" :
             food_list = ['tarte_pomme', 'carpaccio_boeuf', 'bibimbap', 'cupcakes', 'foie_gras', 'frites', 
@@ -141,7 +142,8 @@ def uploadmultiple(request):
         request.session['food_list']=food_list
     
         return HttpResponseRedirect('resultat')
-    return render(request,'uploadmultiple.html')
+   return render(request, 'uploadmultiple.html',context)
+
 
 def resultatmultiple(request):
     try:

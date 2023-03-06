@@ -14,7 +14,7 @@
      
      <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="file" id="upload" name="image" class="form-control form-control-lg" placeholder=".form-control-lg"style="margin-bottom:3%">
+        <input type="file" multiple id="upload" name="image" class="form-control form-control-lg" placeholder=".form-control-lg"style="margin-bottom:3%">
         <select class="form-select" list="datalistOptions" style='font-size: 20px;;text-align:center;border: 3px solid grey;' id="model" name="model">
           <option value='0' disabled selected>Selectionner un modèle</option>
           {% for modell in model%}
