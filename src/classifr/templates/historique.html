@@ -32,11 +32,17 @@
              <table class="table table-dark table-striped" style="color:white;" id="stats-table-container" ></table>
          </div>
         <div class="flex-child g2">
-            <button>test</button>
-            <button>test</button>
-            <button>test</button>
-          
-            <canvas style="height: 280px;" id="myChart"></canvas>
+          <div style="padding-bottom:3%">
+          <div style="display:inline;margin-right:5%;">
+            <button id="btnmodel3" class='button-nselec'style="margin-right:2%">Model3</button>
+            <button id="btnmodel11" class='button-selec'disabled>Model11</button>
+          </div>
+          <div style="display:inline;margin-left:5%;">
+            <button id="btntop" class='button-selec' disabled style="margin-right:2%">Top</button>
+            <button id="btnflop" class='button-nselec'>Flop</button>
+          </div>
+        </div>
+            <canvas style="height: 310px;" id="myChart"></canvas>
           </div>
     </div>
 
@@ -238,219 +244,292 @@ btnerreurs=document.getElementById("btnerreurs")
 btnstats=document.getElementById("btnstats")
 
     function histoclick(){
-        console.log("histo");
-        btnhisto.disabled=true;
-        btnhisto.className="button-histo";
-        btnerreurs.disabled=false;
-        btnerreurs.className="button-sig";
-        btnstats.disabled=false;
-        btnstats.className="button-sig";
-        document.getElementById('cont').hidden = false;
-        document.getElementById('statschartcontainer').hidden = true;
-        buildTable(filtre=0);
+      console.log("histo");
+      btnhisto.disabled=true;
+      btnhisto.className="button-histo";
+      btnerreurs.disabled=false;
+      btnerreurs.className="button-sig";
+      btnstats.disabled=false;
+      btnstats.className="button-sig";
+      document.getElementById('cont').hidden = false;
+      document.getElementById('statschartcontainer').hidden = true;
+      buildTable(filtre=0);
+      try{
+        document.getElementById("myChart").remove()
+      }catch(e){}
+      
     }
 
     function erreursclick(){
-        filtre=1
-        console.log("erreurs")
-        btnerreurs.disabled=true
-        btnerreurs.className="button-histo"
-        btnhisto.disabled=false
-        btnhisto.className="button-sig"
-        btnstats.disabled=false
-        btnstats.className="button-sig"
-        document.getElementById('cont').hidden = false;
-        document.getElementById('statschartcontainer').hidden = true;
-        buildTable(filtre);
+      filtre=1
+      console.log("erreurs")
+      btnerreurs.disabled=true
+      btnerreurs.className="button-histo"
+      btnhisto.disabled=false
+      btnhisto.className="button-sig"
+      btnstats.disabled=false
+      btnstats.className="button-sig"
+      document.getElementById('cont').hidden = false;
+      document.getElementById('statschartcontainer').hidden = true;
+      buildTable(filtre);
+      try{
+        document.getElementById("myChart").remove()
+      }catch(e){}
     }
 
     function statsclick(){
-        console.log("stats")
-        btnstats.disabled=true
-        btnstats.className="button-histo"
-        btnerreurs.disabled=false
-        btnerreurs.className="button-sig"
-        btnhisto.disabled=false
-        btnhisto.className="button-sig"
-        document.getElementById('cont').hidden = true;
-        document.getElementById('statschartcontainer').hidden = false;
-        url="http://127.0.0.1:8000/classifr/api/stats/"
-        fetch(url)
-        .then((resp)=>resp.json())
-        .then(function(data){
-            createTable=`
-            <table>
-            <tr style="font-size:18px">
-                <th style="color:#ffb82b; font-size:18px">Nom du Model</th>
-                <th  scope="col">${data[0].nomModel}</th>
-                <th scope="col">${data[1].nomModel}</th>
-            
-            </tr>
-            <tr style="font-size:18px">
-                <th style="color:#ffb82b" scope="row">Total</th>
-                <td>${data[0].total}</td>
-                <td>${data[1].total}</td>
-            </tr>
-            <tr style="font-size:18px">
-                <th style="color:#ffb82b" scope="row">Bonne classification</th>
-                <td>${data[0].success}</td>
-                <td>${data[1].success}</td>
-            </tr>
-            <tr style="font-size:18px">
-                <th style="color:#ffb82b" scope="row">Erreurs</th>
-                <td>${data[0].errors}</td>
-                <td>${data[1].errors}</td>
-            </tr>
-            <tr style="font-size:18px">
-                <th style="color:#ffb82b" scope="row">Précision</th>
-                <td>${data[0].pourcentage} %</td>
-                <td>${data[1].pourcentage} %</td>
-            </tr>
-            <tr style="font-size:18px">
-                <th style="color:#ffb82b" scope="row">Top</th>
-                <td>${data[0].top}</td>
-                <td>${data[1].top}</td>
-            </tr>
-            <tr style="font-size:18px">
-                <th style="color:#ffb82b" scope="row">Faiblesse</th>
-                <td>${data[0].flop}</td>
-                <td>${data[1].flop}</td>
-            </tr>
-            </table>
-            `
-            document.getElementById('stats-table-container').innerHTML=createTable  
-        })
-
-        Chart.register(ChartDataLabels);
-
-        const data = {
-            labels: [''],
-            datasets: [ {
-              label: ['test1'],
-              data: [2],
-              borderWidth: 1,
-              barPercentage:0.90,
-              categoryPercentage:0.95,
-            },
-            {
-                label: ['test2'],
-                data: [3],
-                borderWidth: 1,
-                barPercentage:0.90,
-                categoryPercentage:0.95,
-              },
-             ]
-          };
-          // config 
-    const config = {
-        type: 'bar',
-        data,
-        options: {
+      console.log("stats")
+      btnstats.disabled=true
+      btnstats.className="button-histo"
+      btnerreurs.disabled=false
+      btnerreurs.className="button-sig"
+      btnhisto.disabled=false
+      btnhisto.className="button-sig"
+      document.getElementById('cont').hidden = true;
+      document.getElementById('statschartcontainer').hidden = false;
+      url="http://127.0.0.1:8000/classifr/api/stats/"
+      fetch(url)
+      .then((resp)=>resp.json())
+      .then(function(data){
+          createTable=`
+          <table>
+          <tr style="font-size:18px">
+              <th style="color:#ffb82b; font-size:18px">Nom du Model</th>
+              <th  scope="col">${data[0].nomModel}</th>
+              <th scope="col">${data[1].nomModel}</th>
           
-          plugins:{
-            tooltip:{
-              bodyFont:{
-                size:19,
-                weight:'bold',
-              }
-            },
-            datalabels: {
-              labels: {
-                name: {
-                  clamp:true,
-                  display:'auto',
-                  anchor:'start',
-                  color:'black',
-                  align: 'bottom',
-                  font: {size: 15, weight:'bold'},
-                  formatter: function(value, ctx) {
-                    return ctx.active
-                      ? ctx.dataset.label
-                      : ctx.dataset.label;
-                     
-                  }
-                },
-                value: {
-                  clamp:true,
-                  display:'auto',
-                  anchor:'end',
-                  color:'black',
-                  align: 'top',
-                  font: {size: 16, weight:'bold'},
-                  borderWidth: 2,
-                  borderRadius: 4,
-                  formatter: function(value, ctx) {
-                    return ctx.active
-                      ? value
-                      : Math.round(value * 1000) / 1000;
-                  },
-                  padding: 0
-                }
-              }
-            },
-            legend:{
-              display:true,
-              position:'top',
-              labels:{
-                padding:2,
-                font: {
-                  size: 17 },
-                  boxWidth: 15,
-                  color:'black',
-                  weight:'bold',  
-                }
-              },
-            },
-            scales: {
-              x:{
-                ticks:{
-                  display:true,
-                }
-              },
-              y: {
-                ticks: {
-                  color:'black',
-                  font: {
-                    size:15,
-                    weight:'bold',
-                  },
-                },
-                beginAtZero: true,
-                title:{
-                  display:true,
-                  text:'Classification',
-                  color:"black",
-                  font: {
-                    
-                    size: 20,
-                    weight: 'bold',
-                  },
-                },
-              },
-            },
-          }
-        };
+          </tr>
+          <tr style="font-size:18px">
+              <th style="color:#ffb82b" scope="row">Total</th>
+              <td>${data[0].total}</td>
+              <td>${data[1].total}</td>
+          </tr>
+          <tr style="font-size:18px">
+              <th style="color:#ffb82b" scope="row">Bonne classification</th>
+              <td>${data[0].success}</td>
+              <td>${data[1].success}</td>
+          </tr>
+          <tr style="font-size:18px">
+              <th style="color:#ffb82b" scope="row">Erreurs</th>
+              <td>${data[0].errors}</td>
+              <td>${data[1].errors}</td>
+          </tr>
+          <tr style="font-size:18px">
+              <th style="color:#ffb82b" scope="row">Précision</th>
+              <td>${data[0].pourcentage} %</td>
+              <td>${data[1].pourcentage} %</td>
+          </tr>
+          <tr style="font-size:18px">
+              <th style="color:#ffb82b" scope="row">Top</th>
+              <td>${data[0].top}</td>
+              <td>${data[1].top}</td>
+          </tr>
+          <tr style="font-size:18px">
+              <th style="color:#ffb82b" scope="row">Faiblesse</th>
+              <td>${data[0].flop}</td>
+              <td>${data[1].flop}</td>
+          </tr>
+          </table>
+          `
+          document.getElementById('stats-table-container').innerHTML=createTable  
+      })
 
-  
-      // render init block
-      const ctx=document.getElementById('myChart');
-      const myChart = new Chart(
-        ctx,
-        config
-      );
-      function clickHandler(click){
-        const points = myChart.getElementsAtEventForMode(click, 'nearest' , {intersect:true}, true);
-        if (points.length) {
-          const firstPoint = points[0];
-          value= myChart.data.datasets[firstPoint.datasetIndex].label[0]
-          console.log(value)
-          
-        }
-      }
-      ctx.onclick = clickHandler;
-      console.log(myChart)
-  
+      var model="model11"
+      var top="true"
+      fetchData()
+      model3=document.getElementById("btnmodel3")
+      model11=document.getElementById("btnmodel11")
+      btntop=document.getElementById("btntop")
+      btnflop=document.getElementById("btnflop")
+      model3.addEventListener('click', () => {
+        model="model3"
+        model11.disabled=false
+        model3.disabled=true
+        model11.className="button-nselec"
+        model3.className="button-selec"
+        fetchData()
+    });
+    model11.addEventListener('click', () => {
+      model="model11"
+      model11.disabled=true
+      model3.disabled=false
+      model11.className="button-selec"
+      model3.className="button-nselec"
+      fetchData()
+  });
+    btntop.addEventListener('click', () => {
+      top="true"
+      btntop.disabled=true
+      btnflop.disabled=false
+      btntop.className="button-selec"
+      btnflop.className="button-nselec"
+      fetchData()
+  });
+    btnflop.addEventListener('click', () => {
+      top="false"
+      btntop.disabled=false
+      btnflop.disabled=true
+      btntop.className="button-nselec"
+      btnflop.className="button-selec"
+      fetchData()
+    });
+
+    function fetchData(){
+      fetch(`http://127.0.0.1:8000/classifr/api/statsgraph/?model=${model}&top=${top}`)
+      .then((resp)=>resp.json())
+      .then(function(statsData){
+        console.log(statsData)
+        buildChart(statsData)
+      })
     }
+      
+}
+
+function buildChart(statsData){
+
+  try{
+    document.getElementById("myChart").remove()
+  }catch(e){}
+  const canvas = document.createElement('canvas');
+  canvas.style.height = '310px';
+  canvas.id = 'myChart';
+  document.querySelector('#statschartcontainer .flex-child.g2').appendChild(canvas)
+
+  Chart.register(ChartDataLabels);
+
+  const data = {
+    labels: [''],
+    datasets: []
+  };
+  
+  statsData.forEach(item => {
+    const label = item[0];
+    const value = item[1];
+    const dataset = {
+      label: [label],
+      data: [value],
+      borderWidth: 1,
+      barPercentage: 0.9,
+      categoryPercentage: 0.95
+    };
+    data.datasets.push(dataset);
+  });
+    // config 
+const config = {
+  type: 'bar',
+  data,
+  options: {
+    layout: {
+      padding: {  
+          bottom: 70,
+      },
+  },
+    plugins:{
+      tooltip:{
+        bodyFont:{
+          size:19,
+          weight:'bold',
+        }
+      },
+      datalabels: {
+        labels: {
+          name: {
+            clamp:true,
+            display:'auto',
+            anchor:'start',
+            rotation:60,
+            color:'black',
+            align: 'bottom',
+            font: {size: 15, weight:'bold'},
+            formatter: function(value, ctx) {
+              return ctx.active
+                ? ctx.dataset.label
+                : ctx.dataset.label;
+                
+            }
+          },
+          value: {
+            clamp:true,
+            display:'auto',
+            anchor:'end',
+            color:'black',
+            align: 'bottom',
+            font: {size: 16, weight:'bold'},
+            borderWidth: 2,
+            borderRadius: 4,
+            formatter: function(value, ctx) {
+              return ctx.active
+                ? value
+                : Math.round(value * 1000) / 1000;
+            },
+            padding: 0
+          }
+        }
+      },
+      legend:{
+        display:true,
+        position:'top',
+        labels:{
+          padding:5,
+          font: {
+            size: 17 },
+            boxWidth: 15,
+            color:'black',
+            weight:'bold',  
+          }
+        },
+      },
+      scales: {
+        x:{
+          ticks:{
+            display:true,
+          }
+        },
+        y: {
+          ticks: {
+            color:'black',
+            font: {
+              size:15,
+              weight:'bold',
+            },
+          },
+          beginAtZero: true,
+          title:{
+            display:true,
+            text:'Classification',
+            color:"black",
+            font: {
+              
+              size: 20,
+              weight: 'bold',
+            },
+          },
+        },
+      },
+    }
+  };
+
+  
+// render init block
+const ctx=document.getElementById('myChart');
+const myChart = new Chart(
+  ctx,
+  config
+);
+function clickHandler(click){
+  const points = myChart.getElementsAtEventForMode(click, 'nearest' , {intersect:true}, true);
+  if (points.length) {
+    const firstPoint = points[0];
+    value= myChart.data.datasets[firstPoint.datasetIndex].label[0]
+    console.log(value)
+    
+  }
+}
+ctx.onclick = clickHandler;
+console.log(myChart)
+
+
+}
 
 </script>
 

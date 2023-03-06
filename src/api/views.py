@@ -113,4 +113,47 @@ def getstats(request):
             'top':topModel11[0][0],
             'flop':flopModel11[0][0],            
     }]
+    print(result)
     return Response(result)
+
+@api_view(['GET'])
+def getstatsgraph(request):
+    cursor=connection.cursor()
+    model=request.query_params.get('model',None)
+    top=request.query_params.get('top',None)
+    if model=="model3":
+        if top=="true":
+            cursor.execute('''select classe_predit,count(*)
+                            from historique 
+                            where nom_model='model3' and classe_correcte is null
+                            group by (classe_predit)
+                            order by 2 desc''')
+            topModel3=cursor.fetchall()
+            print(type(topModel3))
+            return Response(topModel3)
+        elif top=="false":
+            cursor.execute('''select classe_correcte,count(*)
+                            from historique 
+                            where nom_model='model3' and classe_correcte is not null
+                            group by (classe_correcte)
+                            order by 2 desc''')
+            flopModel3=cursor.fetchall()
+            return Response(flopModel3)
+    elif model=="model11":
+        if top=="true":
+            cursor.execute('''select classe_predit,count(*)
+                            from historique 
+                            where nom_model='model11' and classe_correcte is null
+                            group by (classe_predit)
+                            order by 2 desc''')
+            topModel11=cursor.fetchall()
+            return Response(topModel11)
+        elif top=="false":
+            cursor.execute('''select classe_correcte,count(*)
+                            from historique 
+                            where nom_model='model11' and classe_correcte is not null
+                            group by (classe_correcte)
+                            order by 2 desc''')
+            flopModel11=cursor.fetchall()
+            return Response(flopModel11)
+    return Response({})

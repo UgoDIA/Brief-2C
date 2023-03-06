@@ -17,4 +17,5 @@ urlpatterns = [
     path('api/updatehisto/<str:pk>/', views.updateHisto, name="histoUpdate"),
     path('api/deletehisto/<str:pk>/', views.deleteHisto, name="histoDelete"),
     path('api/stats/', views.getstats, name="stats"),
+    path('api/statsgraph/', views.getstatsgraph, name="statsgraph"),
 ]
