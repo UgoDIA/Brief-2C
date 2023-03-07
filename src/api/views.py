@@ -142,7 +142,7 @@ def getstats(request):
             'top':topModel11[0][0],
             'flop':flopModel11[0][0],            
     }]
-    print(result)
+    # print(result)
     return Response(result)
 
 @api_view(['GET'])

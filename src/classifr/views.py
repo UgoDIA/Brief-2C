@@ -54,6 +54,7 @@ def upload(request):
             # print(label +'  '+str(perc)+' %' )
             return label,perc
         result=(predict_class(model,image))
+        print(result)
         classe_pred=Classe.objects.get(nom_classe=result[0])
         modelname=Model.objects.get(nom_model=modelx)
         histo=Historique(nom_image=image,precision=result[1],classe_predit=classe_pred,nom_model=modelname,date_pred=date.today())
@@ -108,12 +109,16 @@ def uploadmultiple(request):
    model=Model.objects.values_list('nom_model',flat=True)
    context={"model":model}
    if request.method == 'POST':
+        images=[]
         for f in request.FILES.getlist('image'):
             uploaded_image = f
             fs=FileSystemStorage()
             fs.save(uploaded_image.name, uploaded_image)
             image=str(uploaded_image)
+            images.append(image)
+            # print(type(uploaded_image))
         modelx=request.POST['model']
+        print(images)
         if modelx == "model11" :
             food_list = ['tarte_pomme', 'carpaccio_boeuf', 'bibimbap', 'cupcakes', 'foie_gras', 'frites', 
                     'pain_a_l\'ail', 'pizza',  'spaghetti_carbonara','rouleaux_printemps', 'gateau_framboise']
@@ -121,7 +126,8 @@ def uploadmultiple(request):
         elif modelx=="model3":
             food_list = ['tarte_pomme', 'omelette', 'pizza']
             model = load_model('classifr/static/model/model3.hdf5',compile = False)
-        def predict_class(model, image):
+        for image in images:
+            img=image
             image = load_img(path='classifr/static/images/'+image, target_size=(299, 299))
             image = img_to_array(image)                    
             image = np.expand_dims(image, axis=0)         
@@ -131,13 +137,14 @@ def uploadmultiple(request):
             label = food_list[index]
             perc=round(np.amax(pred)*100,2)
             # print(label +'  '+str(perc)+' %' )
-            return label,perc
-        result=(predict_class(model,image))
-        classe_pred=Classe.objects.get(nom_classe=result[0])
-        modelname=Model.objects.get(nom_model=modelx)
-        histo=Historique(nom_image=image,precision=result[1],classe_predit=classe_pred,nom_model=modelname,date_pred=date.today())
-        histo.save()
-        label=result[0]
+            # return label,perc
+        # result=predict_class(model,images)
+            classe_pred=Classe.objects.get(nom_classe=label)
+            modelname=Model.objects.get(nom_model=modelx)
+            print(img)
+            histo=Historique(nom_image=img,precision=perc,classe_predit=classe_pred,nom_model=modelname,date_pred=date.today())
+            histo.save()
+        
         food_list.remove(label)
         food_list.append("autre")
         request.session['histo']=histo.id_histo
