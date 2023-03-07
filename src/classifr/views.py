@@ -136,19 +136,15 @@ def uploadmultiple(request):
             index = np.argmax(pred)
             label = food_list[index]
             perc=round(np.amax(pred)*100,2)
-            # print(label +'  '+str(perc)+' %' )
-            # return label,perc
-        # result=predict_class(model,images)
             classe_pred=Classe.objects.get(nom_classe=label)
             modelname=Model.objects.get(nom_model=modelx)
-            print(img)
             histo=Historique(nom_image=img,precision=perc,classe_predit=classe_pred,nom_model=modelname,date_pred=date.today())
             histo.save()
         
-        food_list.remove(label)
-        food_list.append("autre")
-        request.session['histo']=histo.id_histo
-        request.session['food_list']=food_list
+        # food_list.remove(label)
+        # food_list.append("autre")
+        # request.session['histo']=histo.id_histo
+        # request.session['food_list']=food_list
     
         return HttpResponseRedirect('../resultatmultiple')
    return render(request, 'uploadmultiple.html',context)

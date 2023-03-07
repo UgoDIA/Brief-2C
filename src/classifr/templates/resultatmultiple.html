@@ -3,6 +3,9 @@
 {% load static %}
 
 {% block content %}
+{% if user.is_authenticated %}
+<a class="button-20" role="button" href="{% url 'historique' %}" role="button"> Historique </a>
+{% endif %} 
 
 <div class="container" style="padding:30px" >
     
@@ -13,7 +16,7 @@
 {% endwith %}
 
 <div class="row m-2" >
-    <a href="{% url 'uploadmultiple' %}" class="col-sm mx-5 button-l " role="button" style="margin:20px;font-size:25px"  >Faire une nouvelle classification</a>
+    <a href="{% url 'btreturn' %}" class="col-sm mx-5 button-l " role="button" style="margin:20px;font-size:25px"  >Faire une nouvelle classification</a>
     <button class="col-sm mx-5 button-l " type="button" role="button" onclick="openPopup()" style="margin:20px;font-size:25px" >Signaler une erreur
       <img src="{%static 'images/flag.png'%}"style="max-height: 30px; max-width: 30px;">
     </button>
