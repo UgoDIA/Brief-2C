@@ -110,6 +110,8 @@ def uploadmultiple(request):
    context={"model":model}
    if request.method == 'POST':
         images=[]
+        idHisto=[]
+        path=[]
         for f in request.FILES.getlist('image'):
             uploaded_image = f
             fs=FileSystemStorage()
@@ -140,26 +142,22 @@ def uploadmultiple(request):
             modelname=Model.objects.get(nom_model=modelx)
             histo=Historique(nom_image=img,precision=perc,classe_predit=classe_pred,nom_model=modelname,date_pred=date.today())
             histo.save()
-        
+            idHisto.append(histo.id_histo)
+                
         # food_list.remove(label)
         # food_list.append("autre")
-        # request.session['histo']=histo.id_histo
-        # request.session['food_list']=food_list
-    
+        request.session['food_list']=food_list
+        request.session['idHisto']=idHisto
         return HttpResponseRedirect('../resultatmultiple')
    return render(request, 'uploadmultiple.html',context)
 
 
 def resultatmultiple(request):
     try:
-        histo=request.session['histo']
+        idHisto=request.session['idHisto']
         food_list=request.session['food_list']
-        histo=Historique.objects.get(id_histo=histo)
-        label=histo.classe_predit.nom_classe
-        precision=histo.precision
-        path="/images/"+histo.nom_image
-        # classe=Classe.objects.values_list('nom_classe',flat=True)
-        context={'path':path,'label':label,'precision':precision,'histo':histo,'food_list':food_list} 
+        histo=Historique.objects.filter(id_histo__in=idHisto)
+        context={'histo':histo,'food_list':food_list} 
         if request.method =='POST':
             try:
                 x=request.POST["classec"] 

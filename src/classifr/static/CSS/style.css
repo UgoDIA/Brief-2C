@@ -479,6 +479,21 @@ margin-right: auto;
   }
 }
 
+.imgresultmult{
+  max-height: 200px; 
+  max-width: 200px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  }
+  
+  @media (max-width: 768px) {
+    .imgresultmult {
+      max-height: 100px; 
+      max-width: 100px;
+    }
+  }
+
 
 .dataTables_wrapper .dataTables_length select {
   border: 1px solid #aaa;
@@ -526,6 +541,7 @@ table.dataTable thead > tr > th.sorting, table.dataTable thead > tr > th.sorting
 .flex-container {
   display: flex;
   flex-wrap: wrap;
+  
 }
 
 .flex-child {

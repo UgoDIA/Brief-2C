@@ -4,16 +4,24 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-<a class="button-20" role="button" href="{% url 'historique' %}" role="button"> Historique </a>
+<a class="button-20" role="button" href="{% url 'historique' %}" role="button"> Monitoring </a>
 {% endif %} 
 
-<div class="container" style="padding:30px" >
-    
-<h1 style = "text-align : center";>Résultat de la classification: </h1>
-<h2 style = "text-align : center;color: white;margin:10px;margin-top:20px">L'image appartient à la classe <p style="color:#ffb82b;display: inline"> {{label}}</p> à <p style="color:#ffb82b;display: inline">{{precision}}%</p></h2>
-{%with path as image %}
-<img class="imgresult" src="{% static image %}"  >
-{% endwith %}
+
+
+<h1 style = "text-align : center;margin-top :1%";>Résultat de la classification: </h1>
+<div class="flex-container">
+
+  {% for hist in histo%}
+  
+  <div style='padding:10px;margin: 0 auto;'> 
+<h2 style = "text-align : center;color: white;margin:10px;margin-top:20px"><p style="color:#ffb82b;display: inline"> {{hist.classe_predit.nom_classe}} :</p>  <p style="color:#ffb82b;display: inline">{{hist.precision}}%</p></h2>
+<img class="imgresultmult" src="{% static "/images/"|add:hist.nom_image %}"  >
+</div>
+{% comment %} <h1>{{food_list|cut:hist.classe_predit.nom_classe }}</h1> {% endcomment %}
+{% endfor %}
+</div>
+
 
 <div class="row m-2" >
     <a href="{% url 'btreturn' %}" class="col-sm mx-5 button-l " role="button" style="margin:20px;font-size:25px"  >Faire une nouvelle classification</a>
@@ -42,7 +50,7 @@
 </div>
 </div>
 
-</div>
+
 
 <script>
 let popup = document.getElementById("popup");
