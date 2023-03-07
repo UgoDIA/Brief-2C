@@ -158,7 +158,6 @@ def getstatsgraph(request):
                             group by (classe_predit)
                             order by 2 desc''')
             topModel3=cursor.fetchall()
-            print(type(topModel3))
             return Response(topModel3)
         elif top=="false":
             cursor.execute('''select classe_correcte,count(*)
