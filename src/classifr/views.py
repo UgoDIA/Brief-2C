@@ -143,7 +143,7 @@ def uploadmultiple(request):
         request.session['histo']=histo.id_histo
         request.session['food_list']=food_list
     
-        return HttpResponseRedirect('resultat')
+        return HttpResponseRedirect('../resultatmultiple')
    return render(request, 'uploadmultiple.html',context)
 
 
