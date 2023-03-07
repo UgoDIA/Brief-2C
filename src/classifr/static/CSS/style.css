@@ -336,7 +336,7 @@ h1{
 }
 
 .button-nselec:hover {
-
+  border: 3px solid rgb(0, 0, 0);
   color: #ffc248;
   transition: 0.5s;
 }
@@ -356,7 +356,7 @@ h1{
 
 .button-selec {
   background-color: #000000;
-  border: 1px solid transparent;
+  border: 3px solid rgb(0, 0, 0);
   border-radius: .50rem;
   box-sizing: border-box;
   color: #ffb82b;
