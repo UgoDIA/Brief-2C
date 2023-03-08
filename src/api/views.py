@@ -1,11 +1,8 @@
-from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from  classifr.models import Classe,Model,Historique
 from .serializers import HistoSerializer
 from django.db import connection
-from django.db.models import Count
-# Create your views here.
 
 @api_view(['GET'])
 def getHisto(request):
