@@ -334,56 +334,83 @@ btnstats=document.getElementById("btnstats")
           `
           document.getElementById('stats-table-container').innerHTML=createTable  
       })
-
+      
       var model="model11"
       var top="true"
-      fetchData()
+      
       model3=document.getElementById("btnmodel3")
       model11=document.getElementById("btnmodel11")
       btntop=document.getElementById("btntop")
       btnflop=document.getElementById("btnflop")
+
+      model11.disabled=true
+      model3.disabled=false
+      model11.className="button-selec"
+      model3.className="button-nselec"
+      btntop.disabled=true
+      btnflop.disabled=false
+      btntop.className="button-selec"
+      btnflop.className="button-nselec"
+      
+      fetchData(model,top)
+      
       model3.addEventListener('click', () => {
         model="model3"
         model11.disabled=false
         model3.disabled=true
         model11.className="button-nselec"
         model3.className="button-selec"
-        fetchData()
-    });
-    model11.addEventListener('click', () => {
-      model="model11"
-      model11.disabled=true
-      model3.disabled=false
-      model11.className="button-selec"
-      model3.className="button-nselec"
-      fetchData()
-  });
-    btntop.addEventListener('click', () => {
-      top="true"
-      btntop.disabled=true
-      btnflop.disabled=false
-      btntop.className="button-selec"
-      btnflop.className="button-nselec"
-      fetchData()
-  });
-    btnflop.addEventListener('click', () => {
-      top="false"
-      btntop.disabled=false
-      btnflop.disabled=true
-      btntop.className="button-nselec"
-      btnflop.className="button-selec"
-      fetchData()
-    });
+        fetchData(model,top)
+      });
+      model11.addEventListener('click', () => {
+        model="model11"
+        model11.disabled=true
+        model3.disabled=false
+        model11.className="button-selec"
+        model3.className="button-nselec"
+        fetchData(model,top)
+      });
+      btntop.addEventListener('click', () => {
+        top="true"
+        btntop.disabled=true
+        btnflop.disabled=false
+        btntop.className="button-selec"
+        btnflop.className="button-nselec"
+        fetchData(model,top)
+      });
+      btnflop.addEventListener('click', () => {
+        top="false"
+        btntop.disabled=false
+        btnflop.disabled=true
+        btntop.className="button-nselec"
+        btnflop.className="button-selec"
+        fetchData(model,top)
+      });
 
-    function fetchData(){
-      fetch(`http://127.0.0.1:8000/classifr/api/statsgraph/?model=${model}&top=${top}`)
-      .then((resp)=>resp.json())
-      .then(function(statsData){
-        console.log(statsData)
-        buildChart(statsData)
-      })
-    }
+    
       
+}
+
+let isFetching = false;
+
+function fetchData(model, top) {
+  if (isFetching) {
+    return;
+  }
+
+  isFetching = true;
+
+  fetch(`http://127.0.0.1:8000/classifr/api/statsgraph/?model=${model}&top=${top}`)
+    .then((resp) => resp.json())
+    .then(function (statsData) {
+      console.log(statsData);
+      buildChart(statsData)
+      isFetching = false; 
+    })
+    .catch(function (error) {
+      console.error(error);
+      isFetching = false; 
+    });
 }
 
 function buildChart(statsData){
