@@ -34,11 +34,11 @@
         <div class="flex-child g2">
           <div style="padding-bottom:1%; ">
           
-            <button id="btnmodel3"  class='button-nselec'>Model3</button>
-            <button id="btnmodel11" class='button-selec'disabled>Model11</button>
-            <div style="display:inline;margin-left:5%;">
-              <button id="btntop" class='button-selec' disabled style="margin-right:2%">Desc</button>
-              <button id="btnflop" class='button-nselec'>Asc</button>
+            <button id="btnmodel3"  class='button-nselec'style="margin-right:1%">Model3</button>
+            <button id="btnmodel11" class='button-selec'disabled >Model11</button>
+            <div style="display:inline;margin-left:10%;">
+              <button id="btndesc" class='button-selec' disabled style="margin-right:1%">Desc</button>
+              <button id="btnasc" class='button-nselec'>Asc</button>
             </div>
         </div>
             <canvas style="height: 500px;" id="myChart"></canvas>
@@ -325,21 +325,22 @@ btnstats=document.getElementById("btnstats")
       })
       
       var model="model11"
+      var ordre="desc"
       
       
       model3=document.getElementById("btnmodel3")
       model11=document.getElementById("btnmodel11")
-      btntop=document.getElementById("btntop")
-      btnflop=document.getElementById("btnflop")
+      btndesc=document.getElementById("btndesc")
+      btnasc=document.getElementById("btnasc")
 
       model11.disabled=true
       model3.disabled=false
       model11.className="button-selec"
       model3.className="button-nselec"
-      btntop.disabled=true
-      btnflop.disabled=false
-      btntop.className="button-selec"
-      btnflop.className="button-nselec"
+      btndesc.disabled=true
+      btnasc.disabled=false
+      btndesc.className="button-selec"
+      btnasc.className="button-nselec"
 
       
       fetchData(model,ordre)
@@ -360,20 +361,20 @@ btnstats=document.getElementById("btnstats")
         model3.className="button-nselec"
         fetchData(model,ordre)
       });
-      btntop.addEventListener('click', () => {
-        top="true"
-        btntop.disabled=true
-        btnflop.disabled=false
-        btntop.className="button-selec"
-        btnflop.className="button-nselec"
+      btndesc.addEventListener('click', () => {
+        ordre="desc"
+        btndesc.disabled=true
+        btnasc.disabled=false
+        btndesc.className="button-selec"
+        btnasc.className="button-nselec"
         fetchData(model,ordre)
       });
-      btnflop.addEventListener('click', () => {
-        top="false"
-        btntop.disabled=false
-        btnflop.disabled=true
-        btntop.className="button-nselec"
-        btnflop.className="button-selec"
+      btnasc.addEventListener('click', () => {
+        ordre="asc"
+        btndesc.disabled=false
+        btnasc.disabled=true
+        btndesc.className="button-nselec"
+        btnasc.className="button-selec"
         fetchData(model,ordre)
       });
     
