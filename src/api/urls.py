@@ -18,4 +18,5 @@ urlpatterns = [
     path('api/deletehisto/<str:pk>/', views.deleteHisto, name="histoDelete"),
     path('api/stats/', views.getstats, name="stats"),
     path('api/statsgraph/', views.getstatsgraph, name="statsgraph"),
+    path('api/statsgraph/hover/', views.hover, name="hover"),
 ]

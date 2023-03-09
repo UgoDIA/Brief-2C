@@ -394,7 +394,7 @@ function fetchData(model,ordre) {
     .then((resp) => resp.json())
     .then(function (statsData) {
       console.log(statsData);
-      buildChart(statsData)
+      buildChart(statsData,model)
       isFetching = false; 
     })
     .catch(function (error) {
@@ -403,7 +403,7 @@ function fetchData(model,ordre) {
     });
 }
 
-function buildChart(statsData){
+function buildChart(statsData,model){
 
   try{
     document.getElementById("myChart").remove()
@@ -433,6 +433,7 @@ function buildChart(statsData){
     data.datasets.push(dataset);
   });
     // config 
+
 const config = {
   type: 'bar',
   data,
@@ -447,7 +448,14 @@ const config = {
         bodyFont:{
           size:19,
           weight:'bold',
-        }
+        },
+        yAlign:'bottom',
+        callbacks:{
+          label:(context)=>{
+           // console.log(context.dataset)
+            return `${context.dataset.label} ${context.dataset.data}%`
+          }
+        },
       },
       datalabels: {
         labels: {
@@ -477,11 +485,26 @@ const config = {
             font: {size: 16, weight:'bold'},
             formatter: function(value, ctx) {
               return ctx.active
-                ? value
-                : Math.round(value * 1000) / 1000 +"\n%";
+                ? ''
+                : value+"%";
             },
             padding: 0
-          }
+          },
+          hoverdata: {
+            clamp:true,
+            display:'true',
+            anchor:'center',
+            color:'black',
+            align: 'center',
+            textAlign:'center',
+            font: {size: 16, weight:'bold',lineHeight:2},
+            formatter: function(value, ctx) {
+              return ctx.active
+                ?  hoverData(ctx.dataset.label)
+                : '';
+            },
+            padding: 0
+          },
         }
       },
       legend:{
@@ -527,7 +550,22 @@ const config = {
     }
   };
 
+function hoverData(label){
+  try{
+    fetch(`http://127.0.0.1:8000/classifr/api/statsgraph/hover/?model=${model}&label=${label}`)
+  .then((resp) => resp.json())
+  .then(function (result) {
+    total=result[0][3]
+    ok=result[0][1]
+    ko=result[0][2]
+    return total,ok,ko
+  })
+  return `${total}\nok: ${ok}\nko: ${ko}`
+
+  }catch(e){}
   
+}  
+
 // render init block
 const ctx=document.getElementById('myChart');
 const myChart = new Chart(
