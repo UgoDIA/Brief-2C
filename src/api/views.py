@@ -49,7 +49,7 @@ def getstats(request):
                     group by (nom_model)
                     order by nom_model desc''')
     totalModel=cursor.fetchall()
-    # print(totalModel)
+    
     cursor.execute('''select nom_model,count(*)
                     from historique 
                     where classe_correcte is null and nom_model='model3'
@@ -66,7 +66,7 @@ def getstats(request):
     totalModel11Success=cursor.fetchall()
     if not totalModel11Success:
         totalModel11Success=[('0',0)]
-    # print(totalModelSuccess)
+  
     cursor.execute('''select nom_model,count(*)
                     from historique 
                     where classe_correcte is not null and nom_model='model3'
@@ -75,7 +75,7 @@ def getstats(request):
     totalModel3Error=cursor.fetchall()
     if not totalModel3Error:
         totalModel3Error=[('0',0)]
-    # print(totalModel3Error)
+
     cursor.execute('''select nom_model,count(*)
                     from historique 
                     where classe_correcte is not null and nom_model='model11'
@@ -84,7 +84,7 @@ def getstats(request):
     totalModel11Error=cursor.fetchall()
     if not totalModel11Error:
         totalModel11Error=[('0',0)]
-    # print(totalModel11Error)
+   
     cursor.execute('''select classe_predit,count(*)
                     from historique 
                     where nom_model='model3' and classe_correcte is null
@@ -93,7 +93,7 @@ def getstats(request):
     topModel3=cursor.fetchall()
     if not topModel3:
         topModel3=[('0',0)]
-    # print(topModel3)
+    
     cursor.execute('''select classe_correcte,count(*)
                     from historique 
                     where nom_model='model3' and classe_correcte is not null
@@ -102,7 +102,7 @@ def getstats(request):
     flopModel3=cursor.fetchall()
     if not flopModel3:
         flopModel3=[('0',0)]
-    # print(flopModel3)
+
     cursor.execute('''select classe_predit,count(*)
                     from historique 
                     where nom_model='model11' and classe_correcte is null
@@ -111,7 +111,7 @@ def getstats(request):
     topModel11=cursor.fetchall()
     if not topModel11:
         topModel11=[('0',0)]
-    # print(topModel11)
+   
     cursor.execute('''select classe_correcte,count(*)
                     from historique 
                     where nom_model='model11' and classe_correcte is not null
@@ -120,7 +120,7 @@ def getstats(request):
     flopModel11=cursor.fetchall()
     if not flopModel11:
         flopModel11=[('0',0)]
-    # print(flopModel11)
+  
     result=[{
             "nomModel":totalModel[0][0],
             "total":totalModel[0][1],
@@ -139,7 +139,7 @@ def getstats(request):
             'top':topModel11[0][0],
             'flop':flopModel11[0][0],            
     }]
-    # print(result)
+ 
     return Response(result)
 
 @api_view(['GET'])
