@@ -32,17 +32,16 @@
              <table class="table table-dark table-striped" style="color:white;" id="stats-table-container" ></table>
          </div>
         <div class="flex-child g2">
-          <div style="padding-bottom:3%">
-          <div style="display:inline;margin-right:5%;">
-            <button id="btnmodel3" class='button-nselec'style="margin-right:2%">Model3</button>
+          <div style="padding-bottom:1%; ">
+          
+            <button id="btnmodel3"  class='button-nselec'>Model3</button>
             <button id="btnmodel11" class='button-selec'disabled>Model11</button>
-          </div>
-          <div style="display:inline;margin-left:5%;">
-            <button id="btntop" class='button-selec' disabled style="margin-right:2%">Top</button>
-            <button id="btnflop" class='button-nselec'>Flop</button>
-          </div>
+            <div style="display:inline;margin-left:5%;">
+              <button id="btntop" class='button-selec' disabled style="margin-right:2%">Desc</button>
+              <button id="btnflop" class='button-nselec'>Asc</button>
+            </div>
         </div>
-            <canvas style="height: 310px;" id="myChart"></canvas>
+            <canvas style="height: 500px;" id="myChart"></canvas>
           </div>
     </div>
 
@@ -320,23 +319,13 @@ btnstats=document.getElementById("btnstats")
               <td>${data[0].pourcentage} %</td>
               <td>${data[1].pourcentage} %</td>
           </tr>
-          <tr style="font-size:18px">
-              <th style="color:#ffb82b" scope="row">Top</th>
-              <td>${data[0].top}</td>
-              <td>${data[1].top}</td>
-          </tr>
-          <tr style="font-size:18px">
-              <th style="color:#ffb82b" scope="row">Faiblesse</th>
-              <td>${data[0].flop}</td>
-              <td>${data[1].flop}</td>
-          </tr>
           </table>
           `
           document.getElementById('stats-table-container').innerHTML=createTable  
       })
       
       var model="model11"
-      var top="true"
+      
       
       model3=document.getElementById("btnmodel3")
       model11=document.getElementById("btnmodel11")
@@ -351,8 +340,9 @@ btnstats=document.getElementById("btnstats")
       btnflop.disabled=false
       btntop.className="button-selec"
       btnflop.className="button-nselec"
+
       
-      fetchData(model,top)
+      fetchData(model,ordre)
       
       model3.addEventListener('click', () => {
         model="model3"
@@ -360,7 +350,7 @@ btnstats=document.getElementById("btnstats")
         model3.disabled=true
         model11.className="button-nselec"
         model3.className="button-selec"
-        fetchData(model,top)
+        fetchData(model,ordre)
       });
       model11.addEventListener('click', () => {
         model="model11"
@@ -368,7 +358,7 @@ btnstats=document.getElementById("btnstats")
         model3.disabled=false
         model11.className="button-selec"
         model3.className="button-nselec"
-        fetchData(model,top)
+        fetchData(model,ordre)
       });
       btntop.addEventListener('click', () => {
         top="true"
@@ -376,7 +366,7 @@ btnstats=document.getElementById("btnstats")
         btnflop.disabled=false
         btntop.className="button-selec"
         btnflop.className="button-nselec"
-        fetchData(model,top)
+        fetchData(model,ordre)
       });
       btnflop.addEventListener('click', () => {
         top="false"
@@ -384,23 +374,22 @@ btnstats=document.getElementById("btnstats")
         btnflop.disabled=true
         btntop.className="button-nselec"
         btnflop.className="button-selec"
-        fetchData(model,top)
+        fetchData(model,ordre)
       });
-
     
       
 }
 
 let isFetching = false;
 
-function fetchData(model, top) {
+function fetchData(model,ordre) {
   if (isFetching) {
     return;
   }
 
   isFetching = true;
 
-  fetch(`http://127.0.0.1:8000/classifr/api/statsgraph/?model=${model}&top=${top}`)
+  fetch(`http://127.0.0.1:8000/classifr/api/statsgraph/?model=${model}&ordre=${ordre}`)
     .then((resp) => resp.json())
     .then(function (statsData) {
       console.log(statsData);
@@ -419,7 +408,7 @@ function buildChart(statsData){
     document.getElementById("myChart").remove()
   }catch(e){}
   const canvas = document.createElement('canvas');
-  canvas.style.height = '310px';
+  canvas.style.height = '320px';
   canvas.id = 'myChart';
   document.querySelector('#statschartcontainer .flex-child.g2').appendChild(canvas)
 
@@ -462,12 +451,13 @@ const config = {
       datalabels: {
         labels: {
           name: {
-            clamp:true,
-            display:'auto',
+            clamp:false,
+            display:'true',
             anchor:'start',
-            rotation:60,
+            rotation: '60',
+            align: '60',
             color:'black',
-            align: 'bottom',
+            
             font: {size: 15, weight:'bold'},
             formatter: function(value, ctx) {
               return ctx.active
@@ -478,17 +468,16 @@ const config = {
           },
           value: {
             clamp:true,
-            display:'auto',
+            display:'true',
             anchor:'end',
             color:'black',
             align: 'bottom',
+            textAlign:'center',
             font: {size: 16, weight:'bold'},
-            borderWidth: 2,
-            borderRadius: 4,
             formatter: function(value, ctx) {
               return ctx.active
                 ? value
-                : Math.round(value * 1000) / 1000;
+                : Math.round(value * 1000) / 1000 +"\n%";
             },
             padding: 0
           }
@@ -524,7 +513,7 @@ const config = {
           beginAtZero: true,
           title:{
             display:true,
-            text:'Classification',
+            text:'Précision en %',
             color:"black",
             font: {
               

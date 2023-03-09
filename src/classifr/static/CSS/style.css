@@ -541,7 +541,7 @@ table.dataTable thead > tr > th.sorting, table.dataTable thead > tr > th.sorting
 .flex-container {
   display: flex;
   flex-wrap: wrap;
-  
+  justify-content: center;
 }
 
 .flex-child {
@@ -552,7 +552,7 @@ table.dataTable thead > tr > th.sorting, table.dataTable thead > tr > th.sorting
 
 .flex-child.g1{
   text-align:center;
-  margin: 0 auto;
+  margin-right: 10px;
   margin-top:5px;
   padding-left:20px;
   padding-top:20px;
@@ -567,7 +567,7 @@ table.dataTable thead > tr > th.sorting, table.dataTable thead > tr > th.sorting
 
 .flex-child.g2{
   text-align:center;
-  margin: 0 auto;
+  margin-left: 10px;
   margin-top:5px;
   padding-left:20px;
   padding-top:20px;

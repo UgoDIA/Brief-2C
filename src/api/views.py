@@ -40,145 +40,108 @@ def deleteHisto(request,pk):
     histo.delete()
     return Response("Ligne supprimée")
 
-
 @api_view(['GET'])
 def getstats(request):
+    result = [getModelStats('model3'),getModelStats('model11')]
+    return Response(result)
+
+def getModelStats(model):
     cursor=connection.cursor()
     cursor.execute('''select nom_model,count(*)
                     from historique 
+                    where nom_model=%(model)s
                     group by (nom_model)
-                    order by nom_model desc''')
+                    order by nom_model desc''',{"model":model})
     totalModel=cursor.fetchall()
+    if not totalModel:
+        totalModel=[('0',0)]
     
     cursor.execute('''select nom_model,count(*)
                     from historique 
-                    where classe_correcte is null and nom_model='model3'
+                    where classe_correcte is null and nom_model=%(model)s
                     group by (nom_model)
-                    order by nom_model desc''')
-    totalModel3Success=cursor.fetchall()
-    if not totalModel3Success:
-        totalModel3Success=[('0',0)]
-    cursor.execute('''select nom_model,count(*)
-                    from historique 
-                    where classe_correcte is null and nom_model='model11'
-                    group by (nom_model)
-                    order by nom_model desc''')
-    totalModel11Success=cursor.fetchall()
-    if not totalModel11Success:
-        totalModel11Success=[('0',0)]
+                    order by nom_model desc''',{"model":model})
+    totalModelSuccess=cursor.fetchall()
+    if not totalModelSuccess:
+        totalModelSuccess=[('0',0)]
   
     cursor.execute('''select nom_model,count(*)
                     from historique 
-                    where classe_correcte is not null and nom_model='model3'
+                    where classe_correcte is not null and nom_model=%(model)s
                     group by (nom_model)
-                    order by nom_model desc''')
-    totalModel3Error=cursor.fetchall()
-    if not totalModel3Error:
-        totalModel3Error=[('0',0)]
-
-    cursor.execute('''select nom_model,count(*)
-                    from historique 
-                    where classe_correcte is not null and nom_model='model11'
-                    group by (nom_model)
-                    order by nom_model desc''')
-    totalModel11Error=cursor.fetchall()
-    if not totalModel11Error:
-        totalModel11Error=[('0',0)]
-   
-    cursor.execute('''select classe_predit,count(*)
-                    from historique 
-                    where nom_model='model3' and classe_correcte is null
-                    group by (classe_predit)
-                    order by 2 desc''')
-    topModel3=cursor.fetchall()
-    if not topModel3:
-        topModel3=[('0',0)]
-    
-    cursor.execute('''select classe_correcte,count(*)
-                    from historique 
-                    where nom_model='model3' and classe_correcte is not null
-                    group by (classe_correcte)
-                    order by 2 desc''')
-    flopModel3=cursor.fetchall()
-    if not flopModel3:
-        flopModel3=[('0',0)]
-
-    cursor.execute('''select classe_predit,count(*)
-                    from historique 
-                    where nom_model='model11' and classe_correcte is null
-                    group by (classe_predit)
-                    order by 2 desc''')
-    topModel11=cursor.fetchall()
-    if not topModel11:
-        topModel11=[('0',0)]
-   
-    cursor.execute('''select classe_correcte,count(*)
-                    from historique 
-                    where nom_model='model11' and classe_correcte is not null
-                    group by (classe_correcte)
-                    order by 2 desc''')
-    flopModel11=cursor.fetchall()
-    if not flopModel11:
-        flopModel11=[('0',0)]
-  
-    result=[{
-            "nomModel":totalModel[0][0],
-            "total":totalModel[0][1],
-            "success":totalModel3Success[0][1],
-            "errors":totalModel3Error[0][1],
-            "pourcentage":round(totalModel3Success[0][1] / totalModel[0][1] * 100,2),
-            'top':topModel3[0][0],
-            'flop':flopModel3[0][0],     
-        },
-          {
-            "nomModel":totalModel[1][0],
-            "total":totalModel[1][1],
-            "success":totalModel11Success[0][1],
-            "errors":totalModel11Error[0][1],
-            "pourcentage":round(totalModel11Success[0][1] / totalModel[1][1] * 100,2),
-            'top':topModel11[0][0],
-            'flop':flopModel11[0][0],            
-    }]
+                    order by nom_model desc''',{"model":model})
+    totalModelError=cursor.fetchall()
+    if not totalModelError:
+        totalModelError=[('0',0)]
  
-    return Response(result)
+    cursor.execute('''select classe_predit,count(*)
+                    from historique 
+                    where nom_model=%(model)s and classe_correcte is null
+                    group by (classe_predit)
+                    order by 2 desc''',{"model":model})
+    topModel=cursor.fetchall()
+    if not topModel:
+        topModel=[('0',0)]
+    
+    cursor.execute('''select classe_correcte,count(*)
+                    from historique 
+                    where nom_model=%(model)s and classe_correcte is not null
+                    group by (classe_correcte)
+                    order by 2 desc''',{"model":model})
+    flopModel=cursor.fetchall()
+    if not flopModel:
+        flopModel=[('0',0)]
+
+    result={
+            "nomModel":model,
+            "total":totalModel[0][1],
+            "success":totalModelSuccess[0][1],
+            "errors":totalModelError[0][1],
+            "pourcentage":round(totalModelSuccess[0][1] / totalModel[0][1] * 100,2),
+            'top':topModel[0][0],
+            'flop':flopModel[0][0],     
+        }
+    return result
+
 
 @api_view(['GET'])
 def getstatsgraph(request):
     cursor=connection.cursor()
     model=request.query_params.get('model',None)
-    top=request.query_params.get('top',None)
-    if model=="model3":
-        if top=="true":
-            cursor.execute('''select classe_predit,count(*)
-                            from historique 
-                            where nom_model='model3' and classe_correcte is null
-                            group by (classe_predit)
-                            order by 2 desc''')
-            topModel3=cursor.fetchall()
-            return Response(topModel3)
-        elif top=="false":
-            cursor.execute('''select classe_correcte,count(*)
-                            from historique 
-                            where nom_model='model3' and classe_correcte is not null
-                            group by (classe_correcte)
-                            order by 2 desc''')
-            flopModel3=cursor.fetchall()
-            return Response(flopModel3)
-    elif model=="model11":
-        if top=="true":
-            cursor.execute('''select classe_predit,count(*)
-                            from historique 
-                            where nom_model='model11' and classe_correcte is null
-                            group by (classe_predit)
-                            order by 2 desc''')
-            topModel11=cursor.fetchall()
-            return Response(topModel11)
-        elif top=="false":
-            cursor.execute('''select classe_correcte,count(*)
-                            from historique 
-                            where nom_model='model11' and classe_correcte is not null
-                            group by (classe_correcte)
-                            order by 2 desc''')
-            flopModel11=cursor.fetchall()
-            return Response(flopModel11)
-    return Response({})
+    ordre=request.query_params.get('ordre',None)
+    cursor.execute('''SELECT classe, SUM(bonne_classe) AS bonne_classe, SUM(bonne_classe + mauvaise_classe) AS total
+                        FROM (
+                        SELECT classe_predit AS classe, COUNT(*) AS bonne_classe, 0 AS mauvaise_classe
+                        FROM historique
+                        WHERE nom_model = %(model)s AND classe_correcte IS NULL
+                        GROUP BY classe_predit
+                        UNION ALL
+                        SELECT classe_correcte AS classe, 0 AS bonne_classe, COUNT(*) AS mauvaise_classe
+                        FROM historique
+                        WHERE nom_model = %(model)s AND classe_correcte IS NOT NULL
+                        GROUP BY classe_correcte
+                        ) AS counts
+                        GROUP BY classe
+                        ORDER BY total DESC''',{"model":model})
+    topModel=cursor.fetchall()
+    
+    result = []
+
+    for item in topModel:
+        className = item[0]
+        bonne_classe = item[1]
+        total = item[2]
+        perc = round((bonne_classe/total) * 100, 2)
+        result.append((className, perc))
+        
+   
+    result = [item for item in result if item[0] != "autre"]
+    if ordre=="asc":
+        result.sort(key=lambda x: x[1])
+        return Response(result)
+    else:
+        result.sort(key=lambda x: x[1], reverse=True)
+        return Response(result)
+    
+
+
