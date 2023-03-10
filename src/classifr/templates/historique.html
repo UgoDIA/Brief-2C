@@ -326,7 +326,7 @@ btnstats=document.getElementById("btnstats")
       
       var model="model11"
       var ordre="desc"
-      
+      let hoverList;
       
       model3=document.getElementById("btnmodel3")
       model11=document.getElementById("btnmodel11")
@@ -344,6 +344,8 @@ btnstats=document.getElementById("btnstats")
 
       
       fetchData(model,ordre)
+    
+
       
       model3.addEventListener('click', () => {
         model="model3"
@@ -352,6 +354,7 @@ btnstats=document.getElementById("btnstats")
         model11.className="button-nselec"
         model3.className="button-selec"
         fetchData(model,ordre)
+     
       });
       model11.addEventListener('click', () => {
         model="model11"
@@ -360,6 +363,7 @@ btnstats=document.getElementById("btnstats")
         model11.className="button-selec"
         model3.className="button-nselec"
         fetchData(model,ordre)
+        
       });
       btndesc.addEventListener('click', () => {
         ordre="desc"
@@ -393,18 +397,42 @@ function fetchData(model,ordre) {
   fetch(`http://127.0.0.1:8000/classifr/api/statsgraph/?model=${model}&ordre=${ordre}`)
     .then((resp) => resp.json())
     .then(function (statsData) {
-      console.log(statsData);
-      buildChart(statsData,model)
-      isFetching = false; 
+      //console.log(statsData);
+    
+      fetch(`http://127.0.0.1:8000/classifr/api/statsgraph/hover/?model=${model}`)
+          .then((resp) => resp.json())
+          .then(function (hoverData) {
+            buildChart(statsData, model, hoverData);
+      isFetching = false;
     })
     .catch(function (error) {
       console.error(error);
       isFetching = false; 
-    });
+    })
+  })
 }
 
-function buildChart(statsData,model){
+function displayHoverData(label,hoverData){
+  //console.log(hoverData[0][0])
+  //console.log(hoverData)
+  let found = false;
+  for (let i = 0; i < nestedList.length; i++) {
+  innerList = hoverData.find(list => list[0] === label);
+  if (innerList) {
+    console.log("Item:", label);
+    console.log("Value 1:", innerList[1]);
+    console.log("Value 2:", innerList[2]);
+    console.log("Value 3:", innerList[3]);
+  }
+ 
+  
+}
+}
 
+
+function buildChart(statsData,model,hoverData){
+  
+  
   try{
     document.getElementById("myChart").remove()
   }catch(e){}
@@ -500,7 +528,7 @@ const config = {
             font: {size: 16, weight:'bold',lineHeight:2},
             formatter: function(value, ctx) {
               return ctx.active
-                ?  hoverData(ctx.dataset.label)
+                ?  displayHoverData(ctx.dataset.label,hoverData)
                 : '';
             },
             padding: 0
@@ -550,21 +578,7 @@ const config = {
     }
   };
 
-function hoverData(label){
-  try{
-    fetch(`http://127.0.0.1:8000/classifr/api/statsgraph/hover/?model=${model}&label=${label}`)
-  .then((resp) => resp.json())
-  .then(function (result) {
-    total=result[0][3]
-    ok=result[0][1]
-    ko=result[0][2]
-    return total,ok,ko
-  })
-  return `${total}\nok: ${ok}\nko: ${ko}`
 
-  }catch(e){}
-  
-}  
 
 // render init block
 const ctx=document.getElementById('myChart');
