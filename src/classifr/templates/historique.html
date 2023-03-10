@@ -326,7 +326,6 @@ btnstats=document.getElementById("btnstats")
       
       var model="model11"
       var ordre="desc"
-      let hoverList;
       
       model3=document.getElementById("btnmodel3")
       model11=document.getElementById("btnmodel11")
@@ -413,14 +412,9 @@ function fetchData(model,ordre) {
 }
 
 function displayHoverData(label,hoverData){
-  //console.log(hoverData.toString())
   //console.log(hoverData)
   for (let i = 0; i < hoverData.length; i++) {
     if (hoverData[i][0] === label[0]) {
-      console.log("label:", label[0]);
-      console.log("Value 1:", hoverData[i][1]);
-      console.log("Value 2:", hoverData[i][2]);
-      console.log("Value 3:", hoverData[i][3]);
       ok= hoverData[i][1]
       ko=hoverData[i][2]
       total=hoverData[i][3]
