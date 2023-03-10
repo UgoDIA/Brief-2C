@@ -141,31 +141,7 @@ def getstatsgraph(request):
     else:
         result.sort(key=lambda x: x[1], reverse=True)
         return Response(result)
-    
 
-# @api_view(['GET'])
-# def hover(request):
-#     cursor=connection.cursor()
-#     model=request.query_params.get('model',None)
-#     label=request.query_params.get('label',None)
-#     cursor.execute('''SELECT classe, SUM(bonne_classe) AS bonne_classe,SUM(mauvaise_classe) AS mauvaise_classe, SUM(bonne_classe + mauvaise_classe) AS total
-#                         FROM (
-#                         SELECT classe_predit AS classe, COUNT(*) AS bonne_classe, 0 AS mauvaise_classe
-#                         FROM historique
-#                         WHERE nom_model = %(model)s AND classe_correcte IS NULL and classe_predit=%(label)s
-#                         GROUP BY classe_predit
-#                         UNION ALL
-#                         SELECT classe_correcte AS classe, 0 AS bonne_classe, COUNT(*) AS mauvaise_classe
-#                         FROM historique
-#                         WHERE nom_model = %(model)s AND classe_correcte =%(label)s
-#                         GROUP BY classe_correcte
-#                         ) AS counts
-#                         GROUP BY classe
-#                         ORDER BY total DESC''',{"model":model,"label":label})
-#     result=cursor.fetchall()
-#     if not result:
-#         result=[('0',0)]
-#     return Response(result)
 
 @api_view(['GET'])
 def hover(request):
