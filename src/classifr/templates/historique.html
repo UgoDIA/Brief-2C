@@ -413,21 +413,24 @@ function fetchData(model,ordre) {
 }
 
 function displayHoverData(label,hoverData){
-  //console.log(hoverData[0][0])
+  //console.log(hoverData.toString())
   //console.log(hoverData)
-  let found = false;
-  for (let i = 0; i < nestedList.length; i++) {
-  innerList = hoverData.find(list => list[0] === label);
-  if (innerList) {
-    console.log("Item:", label);
-    console.log("Value 1:", innerList[1]);
-    console.log("Value 2:", innerList[2]);
-    console.log("Value 3:", innerList[3]);
+  for (let i = 0; i < hoverData.length; i++) {
+    if (hoverData[i][0] === label[0]) {
+      console.log("label:", label[0]);
+      console.log("Value 1:", hoverData[i][1]);
+      console.log("Value 2:", hoverData[i][2]);
+      console.log("Value 3:", hoverData[i][3]);
+      ok= hoverData[i][1]
+      ko=hoverData[i][2]
+      total=hoverData[i][3]
+    }
+    
   }
  
-  
+  return `${total}\nok: ${ok}\nko: ${ko}`
 }
-}
+
 
 
 function buildChart(statsData,model,hoverData){
@@ -525,7 +528,7 @@ const config = {
             color:'black',
             align: 'center',
             textAlign:'center',
-            font: {size: 16, weight:'bold',lineHeight:2},
+            font: {size: 16, weight:'bold',lineHeight:1.5},
             formatter: function(value, ctx) {
               return ctx.active
                 ?  displayHoverData(ctx.dataset.label,hoverData)
