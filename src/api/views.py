@@ -97,9 +97,7 @@ def getModelStats(model):
             "total":totalModel[0][1],
             "success":totalModelSuccess[0][1],
             "errors":totalModelError[0][1],
-            "pourcentage":round(totalModelSuccess[0][1] / totalModel[0][1] * 100,2),
-            'top':topModel[0][0],
-            'flop':flopModel[0][0],     
+            "pourcentage":round(totalModelSuccess[0][1] / totalModel[0][1] * 100,2),    
         }
     return result
 
